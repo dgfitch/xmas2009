@@ -17,13 +17,21 @@ states.game = {
   update = function(s, dt)
     s.world:update( dt )
     if love.mouse.isDown( 'l' ) then
-      -- uh
-      s:addRect( love.mouse.getX(), love.mouse.getY() )
+      if math.random() < 0.2 then
+        s:addPoly( love.mouse.getX(), love.mouse.getY() )
+      else
+        s:addRect( love.mouse.getX(), love.mouse.getY() )
+      end
     end
   end,
 
   addRect = function(s, x, y)
     local r = SimpleRect.load( s.world, x, y )
+    table.insert( s.objects, r )
+  end,
+
+  addPoly = function(s, x, y)
+    local r = PolyTest.load( s.world, x, y )
     table.insert( s.objects, r )
   end,
 }
