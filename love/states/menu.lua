@@ -1,0 +1,1 @@
+states.menutext = "HAIRY YAY"
