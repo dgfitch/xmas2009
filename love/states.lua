@@ -8,7 +8,6 @@ states.base = {
 
 function changeState(i)
   S = i
-  S:initialize()
   S:activate()
 end
 

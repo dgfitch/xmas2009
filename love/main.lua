@@ -1,6 +1,8 @@
 require "load.lua"
-requireDir "lib/"
+require "lib/oo.lua"
 require "start.lua"
+require "objects/SimpleRect.lua"
+-- requireDir "objects/"
 
 function love.draw()
   love.graphics.setCaption( 'Hairy Xmas! | FPS: ' .. love.timer.getFPS() )
@@ -8,5 +10,8 @@ function love.draw()
 end
 
 function love.update(dt)
+	if love.keyboard.isDown( 'escape' ) then
+    love.event.push('q')
+	end
   S:update(dt)
 end
