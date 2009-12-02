@@ -3,7 +3,8 @@ SimpleRect = {
     local self = {}
     mixin( self, SimpleRect )
     self.body = love.physics.newBody( world, x, y, 0.5, 10 )
-    self.rect = love.physics.newRectangleShape( self.body, 50, 50 )
+    local size = math.random(60) + 20
+    self.rect = love.physics.newRectangleShape( self.body, 0, 0, size, size, math.random() * math.twopi )
     return self
   end,
 

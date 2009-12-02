@@ -8,3 +8,5 @@ function math.clamp( num, min, max )
 	return num
 end
 
+math.twopi = math.pi * math.pi
+

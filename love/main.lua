@@ -1,5 +1,6 @@
 require "load.lua"
 require "lib/oo.lua"
+require "lib/math.lua"
 require "start.lua"
 require "objects/SimpleRect.lua"
 -- requireDir "objects/"
