@@ -21,6 +21,10 @@ states.game = {
       if v.draw then v:draw() end
     end
     s.cursor:draw()
+    if s.cursor.connected then
+      local x, y = s.cursor.joint:getTarget()
+      love.graphics.print("POOT", x, y)
+    end
   end,
 
   update = function(s, dt)
@@ -36,10 +40,15 @@ states.game = {
         s:addRect( x, y )
       end
     elseif b == 'l' then
-      --local j = love.physics.newMouseJoint( o.body, x, y )
+      s.cursor:connect( x, y )
     end
   end,
 
+  mousereleased = function(s, x, y, b)
+    if b == 'l' then
+      s.cursor:disconnect()
+    end
+  end,
 
 
   addRect = function(s, x, y)
