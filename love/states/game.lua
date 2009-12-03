@@ -69,7 +69,7 @@ states.game = {
 
   collisions = {
     {
-      function(a) return a == states.game.Cursor end,
+      function(a) return a == states.game.cursor end,
       function(b) return b ~= nil end,
       function(cursor, thing) cursor:touch(thing) end
     },
@@ -77,10 +77,7 @@ states.game = {
 
   collision = function(a, b, c)
     for k,v in ipairs(states.game.collisions) do
-      if tryCollide(a, b, c, v[1], v[2], v[3]) then 
-        print "SUCCESS"
-        return 
-      end
+      if tryCollide(a, b, c, v[1], v[2], v[3]) then return end
     end
   end
 
