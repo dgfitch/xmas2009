@@ -7,11 +7,12 @@ states.game = {
 
     s.world = love.physics.newWorld( WIDTH, HEIGHT )
     s.world:setGravity( 0, 200 )
+    s.world:setCallbacks( s.collision, nil, nil, nil )
 
     s:addWall( WIDTH/2, HEIGHT - 100, WIDTH - 200, 20 )
 
     s.cursor = Cursor.load( s.world )
-    love.mouse.setVisible(false)
+    love.mouse.setVisible( false )
   end,
 
   draw = function(s)
@@ -50,7 +51,6 @@ states.game = {
     end
   end,
 
-
   addRect = function(s, x, y)
     local r = SimpleRect.load( s.world, x, y )
     r:setRandomAngle()
@@ -67,7 +67,34 @@ states.game = {
     table.insert( s.objects, w )
   end,
 
+  collisions = {
+    {
+      function(a) return a == states.game.Cursor end,
+      function(b) return b ~= nil end,
+      function(cursor, thing) cursor:touch(thing) end
+    },
+  },
+
+  collision = function(a, b, c)
+    for k,v in ipairs(states.game.collisions) do
+      if tryCollide(a, b, c, v[1], v[2], v[3]) then 
+        print "SUCCESS"
+        return 
+      end
+    end
+  end
+
 }
 
 mixin( states.game, states.base )
 
+tryCollide = function(object1, object2, collisionPoint, predicate1, predicate2, interaction)
+  if predicate1(object1) and predicate2(object2) then
+    interaction(object1, object2, collisionPoint)
+    return true
+  elseif predicate1(object2) and predicate2(object1) then
+    interaction(object2, object1, collisionPoint)
+    return true
+  end
+  return false
+end

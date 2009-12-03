@@ -15,10 +15,14 @@ Cursor = {
     return self
   end,
 
+  touch = function(s, o)
+    s.touching = o
+  end,
+
   connect = function(s, x, y)
-    if #states.game.objects > 1 then
-      local o = states.game.objects[2]
-      s.joint = love.physics.newMouseJoint( o.body, x, y )
+    if s.touching then
+      -- TODO: double check cursor is still touching
+      s.joint = love.physics.newMouseJoint( s.touching.body, x, y )
       s.joint:setMaxForce(50)
       s.connected = true
     end

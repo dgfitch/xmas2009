@@ -20,6 +20,7 @@ SimpleRect = {
     end
 
     self.poly = love.physics.newRectangleShape( self.body, 0, 0, width, height, 0 )
+    self.poly:setData(self)
     if not static then 
       self.body:setMassFromShapes()
     end
