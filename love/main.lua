@@ -2,9 +2,7 @@ require "load.lua"
 require "lib/oo.lua"
 require "lib/math.lua"
 require "start.lua"
-require "objects/SimpleRect.lua"
-require "objects/PolyTest.lua"
--- requireDir "objects/"
+requireDir "objects/"
 
 function love.draw()
   love.graphics.setCaption( 'Hairy Xmas! | FPS: ' .. love.timer.getFPS() )
@@ -16,4 +14,13 @@ function love.update(dt)
     love.event.push('q')
 	end
   S:update(dt)
+end
+
+
+function love.mousepressed(x,y,b)
+  if S.mousepressed then S:mousepressed(x,y,b) end
+end
+
+function love.mousereleased(x,y,b)
+  if S.mousereleased then S:mousereleased(x,y,b) end
 end
