@@ -1,0 +1,5 @@
+LOVE?= /Applications/love20091124.app/Contents/MacOS/love
+BROWSER?=open
+LUA?=lua
+RM?=rm -f
+ZIP?=zip -q -r
