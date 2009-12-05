@@ -11,8 +11,9 @@ Cursor = {
     self.color = { 255,255,255 }
     self.colorLine = { 0, 0, 0 }
     self.poly = love.physics.newPolygonShape( self.body, 0, 0, 18, 20, 0, 26 )
-    self.poly:setSensor(true)
-    self.poly:setData(self)
+    self.detector = love.physics.newCircleShape( self.body, 0, 0, 5 )
+    self.detector:setSensor(true)
+    self.detector:setData(self)
     self:setPosition()
     return self
   end,
