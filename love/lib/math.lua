@@ -9,4 +9,5 @@ function math.clamp( num, min, max )
 end
 
 math.twopi = math.pi * math.pi
+math.halfpi = math.pi / 2
 
