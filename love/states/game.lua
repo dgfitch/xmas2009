@@ -38,24 +38,31 @@ states.game = {
       if v.draw then v:draw() end
     end
     s.cursor:draw()
-    if s.cursor.connected then
-      local x, y = s.cursor.joint:getTarget()
-    end
   end,
 
   update = function(s, dt)
+    for i,v in ipairs( s.objects ) do
+      if v.update then v:update( dt ) end
+    end
     s.cursor:update( dt )
     s.world:update( dt )
-    local liveObjects = {}
-    for i,v in ipairs( s.objects ) do
-      if not v.dead then
-        table.insert( liveObjects, v )
-        if v.update then v:update( dt ) end
-      else
-        v:cleanup()
+    s:cleanup()
+  end,
+
+  cleanup = function(s)
+    repeat
+      local found = false
+      local liveObjects = {}
+      for i,v in pairs( s.objects ) do
+        if v.dead then
+          found = true
+          if v.cleanup then v:cleanup() end
+        else
+          table.insert( liveObjects, v )
+        end
       end
-    end
-    s.objects = liveObjects
+      s.objects = liveObjects
+    until not found
   end,
 
   keypressed = function(s, k)
@@ -109,7 +116,7 @@ states.game = {
   collisionsAdd = {
     {
       function(a) return a == states.game.cursor end,
-      function(b) return b ~= nil end,
+      function(b) return b ~= nil and not b.dead end,
       function(cursor, thing) cursor:touch(thing) end
     },
   },
