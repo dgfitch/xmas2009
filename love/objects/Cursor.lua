@@ -1,7 +1,7 @@
 require "objects/DrawablePoly.lua"
 
 Cursor = {
-  MAX_FORCE = 200,
+  MAX_FORCE = 500,
   colorTouching = { 255,255,255,128 },
   colorConnected = { 255,255,255,200 },
   color = { 255,255,255 },
@@ -23,6 +23,12 @@ Cursor = {
 
   touch = function(s, o)
     s.touching = o
+  end,
+
+  untouch = function(s, o)
+    if s.touching == o then
+      s.touching = nil
+    end
   end,
 
   connect = function(s, x, y)
@@ -58,8 +64,13 @@ Cursor = {
     end
   end,
 
-  update = function(s, dt)
-    s:setPosition()
+  update = function(self, dt)
+    self:setPosition()
+    if self.touching then
+      if not self.touching.poly:testPoint(self.body:getPosition()) then
+        self.touching = nil
+      end
+    end
   end,
 
   draw = function(self)
@@ -67,7 +78,7 @@ Cursor = {
     love.graphics.setLineWidth( SIZE )
     if self.touching then
       love.graphics.setColor( unpack( self.colorTouching ) )
-      love.graphics.circle( 'line', x, y, 8, 20 )
+      love.graphics.circle( 'fill', x, y, 4, 20 )
     end
     if self.connected then
       DrawablePoly.draw(self, 3)

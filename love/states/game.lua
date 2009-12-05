@@ -6,7 +6,7 @@ states.game = {
     s.objects = {}
 
     s.world = love.physics.newWorld( -10, -10, WIDTH + 10, HEIGHT + 10, 0, 400 )
-    s.world:setCallbacks( s.collision, nil, nil, nil )
+    s.world:setCallbacks( s.collisionAdd, nil, s.collisionRemove, nil )
 
     -- bounding
     s:addWall( WIDTH/2, -10, WIDTH + 10, 10 )
@@ -106,7 +106,7 @@ states.game = {
     return w
   end,
 
-  collisions = {
+  collisionsAdd = {
     {
       function(a) return a == states.game.cursor end,
       function(b) return b ~= nil end,
@@ -114,17 +114,26 @@ states.game = {
     },
   },
 
-  collision = function(a, b, c)
-    for k,v in ipairs(states.game.collisions) do
-      if tryCollide(a, b, c, v[1], v[2], v[3]) then return end
+  collisionAdd = function(a, b, c)
+    for k,v in ipairs(states.game.collisionsAdd) do
+      if try(a, b, c, v[1], v[2], v[3]) then return end
     end
-  end
+  end,
+
+  collisionsRemove = {
+  },
+
+  collisionRemove = function(a, b, c)
+    for k,v in ipairs(states.game.collisionsRemove) do
+      if try(a, b, c, v[1], v[2], v[3]) then return end
+    end
+  end,
 
 }
 
 mixin( states.game, states.base )
 
-tryCollide = function(object1, object2, collisionPoint, predicate1, predicate2, interaction)
+try = function(object1, object2, collisionPoint, predicate1, predicate2, interaction)
   if predicate1(object1) and predicate2(object2) then
     interaction(object1, object2, collisionPoint)
     return true
