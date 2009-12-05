@@ -26,4 +26,9 @@ SimpleRect = {
     end
     return self
   end,
+
+  setAngle = function(s, a)
+    s.body:setAngle( a )
+  end,
+
 }

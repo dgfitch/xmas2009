@@ -5,11 +5,19 @@ states.game = {
   initialize = function(s)
     s.objects = {}
 
-    s.world = love.physics.newWorld( WIDTH, HEIGHT )
-    s.world:setGravity( 0, 400 )
+    s.world = love.physics.newWorld( -10, -10, WIDTH + 10, HEIGHT + 10, 0, 400 )
     s.world:setCallbacks( s.collision, nil, nil, nil )
 
-    s:addWall( WIDTH/2, HEIGHT - 100 * SIZE, WIDTH - 200 * SIZE, 20 * SIZE )
+    -- bounding
+    s:addWall( WIDTH/2, -10, WIDTH + 10, 10 )
+    s:addWall( -10, HEIGHT/2, 10, HEIGHT + 10 )
+    s:addWall( WIDTH + 10, HEIGHT/2, 10, HEIGHT + 10 )
+    s:addWall( WIDTH/2, HEIGHT + 10, WIDTH + 10, 10 )
+
+    s:addWall( WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
+    s:addWall( WIDTH - WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
+    s:addWall( WIDTH/3 + WIDTH/16, HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / 2 )
+    s:addWall( WIDTH - (WIDTH/3 + WIDTH/16), HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / -2 )
 
     s.cursor = Cursor.load( s.world )
     love.mouse.setVisible( false )
@@ -24,7 +32,6 @@ states.game = {
     s.cursor:draw()
     if s.cursor.connected then
       local x, y = s.cursor.joint:getTarget()
-      love.graphics.print("POOT", x, y)
     end
   end,
 
@@ -61,8 +68,9 @@ states.game = {
     table.insert( s.objects, r )
   end,
 
-  addWall = function(s, x, y, w, h)
+  addWall = function(s, x, y, w, h, a)
     local w = SimpleRect.load( s.world, x, y, w, h, s.wallColor, true )
+    if a then w:setAngle(a) end
     table.insert( s.objects, w )
   end,
 
