@@ -1,7 +1,7 @@
 states.menu = {
   draw = function(s)
-    love.graphics.print("HAIRY!!!!", 400, 300)
-    love.graphics.print("Click to begin", 400, 340)
+    love.graphics.print("HAIRY!!!!", WIDTH / 2, 300)
+    love.graphics.print("Click to begin", WIDTH / 2, 340)
   end,
 
   update = function(s)

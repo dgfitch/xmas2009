@@ -5,7 +5,7 @@ include Makefile.$(OS)
 
 #.SILENT:
 
-all: clean tests build run
+all: clean build run
 
 clean:
 	$(RM) $(NAME).love

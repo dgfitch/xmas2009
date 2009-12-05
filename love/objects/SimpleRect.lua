@@ -26,8 +26,4 @@ SimpleRect = {
     end
     return self
   end,
-
-  setRandomAngle = function (s)
-    s.body:setAngle( math.random() * math.twopi )
-  end
 }

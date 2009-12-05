@@ -9,7 +9,7 @@ states.game = {
     s.world:setGravity( 0, 200 )
     s.world:setCallbacks( s.collision, nil, nil, nil )
 
-    s:addWall( WIDTH/2, HEIGHT - 100, WIDTH - 200, 20 )
+    s:addWall( WIDTH/2, HEIGHT - 100 * SIZE, WIDTH - 200 * SIZE, 20 * SIZE )
 
     s.cursor = Cursor.load( s.world )
     love.mouse.setVisible( false )
@@ -35,11 +35,7 @@ states.game = {
 
   mousepressed = function(s, x, y, b)
     if b == 'r' then
-      if math.random() < 0.2 then
-        s:addPoly( x, y )
-      else
-        s:addRect( x, y )
-      end
+      s:addPresent( x, y )
     elseif b == 'l' then
       s.cursor:connect( x, y )
     end
@@ -51,13 +47,13 @@ states.game = {
     end
   end,
 
-  addRect = function(s, x, y)
-    local r = SimpleRect.load( s.world, x, y )
+  addPresent = function(s, x, y)
+    local r = Present.load( s.world, x, y )
     r:setRandomAngle()
     table.insert( s.objects, r )
   end,
 
-  addPoly = function(s, x, y)
+  addPoly = function(s, x, y )
     local r = PolyTest.load( s.world, x, y )
     table.insert( s.objects, r )
   end,
