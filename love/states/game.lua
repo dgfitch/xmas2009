@@ -46,9 +46,16 @@ states.game = {
   update = function(s, dt)
     s.cursor:update( dt )
     s.world:update( dt )
-    for k,v in pairs(s.objects) do
-      if v.update then v:update( dt ) end
+    local liveObjects = {}
+    for i,v in ipairs( s.objects ) do
+      if not v.dead then
+        table.insert( liveObjects, v )
+        if v.update then v:update( dt ) end
+      else
+        v:cleanup()
+      end
     end
+    s.objects = liveObjects
   end,
 
   keypressed = function(s, k)
@@ -62,7 +69,7 @@ states.game = {
 
   mousepressed = function(s, x, y, b)
     if b == 'r' then
-      s:addPresent( x, y )
+      s.cursor:destroy( x, y )
     elseif b == 'l' then
       s.cursor:connect( x, y )
     end

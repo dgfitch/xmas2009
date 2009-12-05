@@ -5,7 +5,9 @@ Present = {
     local self = {}
     mixin( self, Present )
     mixin( self, DrawablePoly )
+    mixin( self, Destroyable )
     self.body = love.physics.newBody( world, x, y, 0, 0.1 )
+    self.body:setAngularDamping(0.1)
 
     self.width = math.random(60) + 20 * SIZE
     self.height = math.random(60) + 20 * SIZE
@@ -50,7 +52,6 @@ Present = {
     local x, y = self.body:getPosition()
     local theta = self.body:getAngle()
 
-
     local chx = math.cos(theta + math.halfpi) * self.height / 2
     local chy = math.sin(theta + math.halfpi) * self.height / 2
 
@@ -76,7 +77,13 @@ Present = {
       love.graphics.circle( 'line', x + bowx - bowax, y + bowy - boway, self.width / 5, 13 )
     end
     
-    DrawablePoly.draw(self)
+    if states.game.cursor.connected == self then
+      DrawablePoly.draw(self, 4)
+    elseif states.game.cursor.touching == self then
+      DrawablePoly.draw(self, 2)
+    else
+      DrawablePoly.draw(self)
+    end
 
     -- ribbons over package
     love.graphics.setColor( unpack( self.colorRibbon ) )

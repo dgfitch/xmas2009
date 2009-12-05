@@ -1,9 +1,9 @@
 DrawablePoly = {
-  draw = function( self )
+  draw = function( self, lineWidth )
     love.graphics.setColor( unpack( self.color ) )
     love.graphics.polygon( 'fill', self.poly:getPoints() )
     if self.colorLine then
-      love.graphics.setLineWidth( 1 )
+      love.graphics.setLineWidth( (lineWidth or 1) * SIZE )
       love.graphics.setColor( unpack( self.colorLine ) )
       love.graphics.polygon( 'line', self.poly:getPoints() )
     end

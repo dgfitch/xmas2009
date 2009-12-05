@@ -1,6 +1,8 @@
 require "objects/DrawablePoly.lua"
 
 MachineGun = {
+  intensity = 30,
+
   load = function( world, x, y, orientation )
     local self = {}
     mixin( self, MachineGun )
@@ -22,11 +24,11 @@ MachineGun = {
   fire = function(self)
     local p = states.game:addPresent(self.x, self.y)
     local cx, cy
-    cx = math.cos(self.orientation) * 20
-    cy = math.sin(self.orientation) * 20
+    cx = math.cos(self.orientation) * self.intensity
+    cy = math.sin(self.orientation) * self.intensity
     p.body:applyImpulse(cx, cy, self.x, self.y)
   end,
 
-  update = function(self)
+  update = function(self, dt)
   end,
 }
