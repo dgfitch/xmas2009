@@ -16,6 +16,13 @@ function love.update(dt)
   S:update(dt)
 end
 
+function love.keypressed(k)
+  if S.keypressed then S:keypressed(k) end
+end
+
+function love.keyreleased(k)
+  if S.keyreleased then S:keyreleased(k) end
+end
 
 function love.mousepressed(x,y,b)
   if S.mousepressed then S:mousepressed(x,y,b) end

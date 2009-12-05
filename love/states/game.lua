@@ -14,13 +14,21 @@ states.game = {
     s:addWall( WIDTH + 10, HEIGHT/2, 10, HEIGHT + 10 )
     s:addWall( WIDTH/2, HEIGHT + 10, WIDTH + 10, 10 )
 
+    -- "level design" 
     s:addWall( WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
     s:addWall( WIDTH - WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
     s:addWall( WIDTH/3 + WIDTH/16, HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / 2 )
     s:addWall( WIDTH - (WIDTH/3 + WIDTH/16), HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / -2 )
 
+    -- present firing guns
+    local mx = 30 * SIZE
+    local my = 40 * SIZE
+    s.gun1 = s:add( MachineGun.load( s.world, mx, my, 0 ) )
+    s.gun2 = s:add( MachineGun.load( s.world, WIDTH - mx, my, math.pi * -1 ) )
+    
     s.cursor = Cursor.load( s.world )
     love.mouse.setVisible( false )
+
   end,
 
   draw = function(s)
@@ -43,6 +51,15 @@ states.game = {
     end
   end,
 
+  keypressed = function(s, k)
+    --debugging yay
+    if k == '1' then
+      s.gun1:fire()
+    elseif k == '2' then
+      s.gun2:fire()
+    end
+  end,
+
   mousepressed = function(s, x, y, b)
     if b == 'r' then
       s:addPresent( x, y )
@@ -61,17 +78,25 @@ states.game = {
     local r = Present.load( s.world, x, y )
     r:setRandomAngle()
     table.insert( s.objects, r )
+    return r
   end,
 
-  addPoly = function(s, x, y )
+  add = function(s, o)
+    table.insert( s.objects, o )
+    return o
+  end,
+
+  addPoly = function(s, x, y)
     local r = PolyTest.load( s.world, x, y )
     table.insert( s.objects, r )
+    return r
   end,
 
   addWall = function(s, x, y, w, h, a)
     local w = SimpleRect.load( s.world, x, y, w, h, s.wallColor, true )
     if a then w:setAngle(a) end
     table.insert( s.objects, w )
+    return w
   end,
 
   collisions = {

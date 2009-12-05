@@ -5,11 +5,12 @@ Present = {
     local self = {}
     mixin( self, Present )
     mixin( self, DrawablePoly )
-    self.body = love.physics.newBody( world, x, y, 0, 0.4 )
+    self.body = love.physics.newBody( world, x, y, 0, 0.1 )
 
     self.width = math.random(60) + 20 * SIZE
     self.height = math.random(60) + 20 * SIZE
 
+    self.colorLine = { 0, 0, 0 }
     if color then
       self.color = color
     elseif math.random() < 0.5 then
@@ -36,9 +37,8 @@ Present = {
 
     self.poly = love.physics.newRectangleShape( self.body, 0, 0, self.width, self.height, 0 )
     self.poly:setData(self)
-    if not static then 
-      self.body:setMassFromShapes()
-    end
+    self.poly:setRestitution(0.5)
+    self.body:setMassFromShapes()
     return self
   end,
 
