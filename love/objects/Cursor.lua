@@ -66,7 +66,7 @@ Cursor = {
 
   update = function(self, dt)
     self:setPosition()
-    if self.touching then
+    if self.touching and self.touching.poly then
       if not self.touching.poly:testPoint(self.body:getPosition()) then
         self.touching = nil
       end

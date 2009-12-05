@@ -9,8 +9,8 @@ Present = {
     self.body = love.physics.newBody( world, x, y, 0, 0.1 )
     self.body:setAngularDamping(0.1)
 
-    self.width = math.random(60) + 20 * SIZE
-    self.height = math.random(60) + 20 * SIZE
+    self.width = (math.random(60) + 30) * SIZE
+    self.height = (math.random(60) + 30) * SIZE
 
     self.colorLine = { 0, 0, 0 }
     if color then
