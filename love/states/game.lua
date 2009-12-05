@@ -6,7 +6,7 @@ states.game = {
     s.objects = {}
 
     s.world = love.physics.newWorld( WIDTH, HEIGHT )
-    s.world:setGravity( 0, 200 )
+    s.world:setGravity( 0, 400 )
     s.world:setCallbacks( s.collision, nil, nil, nil )
 
     s:addWall( WIDTH/2, HEIGHT - 100 * SIZE, WIDTH - 200 * SIZE, 20 * SIZE )
@@ -29,8 +29,11 @@ states.game = {
   end,
 
   update = function(s, dt)
-    s.cursor:setPosition()
+    s.cursor:update( dt )
     s.world:update( dt )
+    for k,v in pairs(s.objects) do
+      if v.update then v:update( dt ) end
+    end
   end,
 
   mousepressed = function(s, x, y, b)

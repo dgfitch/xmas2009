@@ -1,6 +1,8 @@
 require "objects/DrawablePoly.lua"
 
 Cursor = {
+  MAX_FORCE = 200,
+
   load = function( world )
     local self = {}
     mixin( self, Cursor )
@@ -23,7 +25,7 @@ Cursor = {
     if s.touching then
       -- TODO: double check cursor is still touching
       s.joint = love.physics.newMouseJoint( s.touching.body, x, y )
-      s.joint:setMaxForce(50)
+      s.joint:setMaxForce(s.MAX_FORCE)
       s.connected = true
     end
   end,
@@ -41,7 +43,11 @@ Cursor = {
     if s.connected and s.joint then
       s.joint:setTarget( x, y )
     end
-  end
+  end,
+
+  update = function(s, dt)
+    s:setPosition()
+  end,
 }
 
 
