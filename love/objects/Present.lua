@@ -67,12 +67,7 @@ Present = {
     -- bow behind package
     love.graphics.setColor( unpack( self.colorRibbon ) )
     love.graphics.setLineWidth( (self.width + self.height) / 18.0 )
-    if self.broken and self.ribbonTrail then
-      local r = self.ribbonTrail
-      for v = 1, #r-3, 2 do
-        love.graphics.line(chx + r[v], chy + r[v+1], chx + r[v+2], chy + r[v+3])
-      end
-    else
+    if not self.broken then
       love.graphics.circle( 'line', x + bowx + bowax, y + bowy + boway, self.width / 5, 11 )
       love.graphics.circle( 'line', x + bowx - bowax, y + bowy - boway, self.width / 5, 13 )
     end
@@ -91,6 +86,11 @@ Present = {
     love.graphics.line( x - chx, y - chy, x + chx, y + chy )
     if not self.broken then
       love.graphics.line( x - cwx, y - cwy, x + cwx, y + cwy )
+    elseif self.ribbonTrail then
+      local r = self.ribbonTrail
+      for v = 1, #r-3, 2 do
+        love.graphics.line(chx + r[v], chy + r[v+1], chx + r[v+2], chy + r[v+3])
+      end
     end
   end,
 
