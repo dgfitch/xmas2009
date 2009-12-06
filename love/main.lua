@@ -1,7 +1,7 @@
 require "load.lua"
 require "lib/oo.lua"
 require "lib/math.lua"
-require "start.lua"
+require "states.lua"
 requireDir "objects/"
 
 function love.draw()

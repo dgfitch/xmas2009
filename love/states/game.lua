@@ -3,10 +3,13 @@ states.game = {
   wallColor = {100,100,100},
 
   initialize = function(s)
+    s.time = 0.0
+    s.score = 0
+
     s.objects = {}
 
     s.world = love.physics.newWorld( -10, -10, WIDTH + 10, HEIGHT + 10, 0, 400 )
-    s.world:setCallbacks( s.collisionAdd, nil, s.collisionRemove, nil )
+    s.world:setCallbacks( s.collisionAdd, nil, nil, nil )
 
     -- bounding
     s:addWall( WIDTH/2, -10, WIDTH + 10, 10 )
@@ -29,22 +32,26 @@ states.game = {
     s.cursor = Cursor.load( s.world )
     love.mouse.setVisible( false )
 
+    s.background = Background.load( s )
   end,
 
   draw = function(s)
+    s.background:draw()
     love.graphics.setColor( 255, 0, 0 )
-    love.graphics.print("HAHA GAME LOL", 10, 20)
+    love.graphics.print("HAHA GAME LOL", 100, 20)
     for k,v in pairs(s.objects) do
       if v.draw then v:draw() end
     end
+    s.background:drawOverlay()
     s.cursor:draw()
   end,
 
   update = function(s, dt)
+    s.time = s.time + (dt / 100)
+    s.cursor:update( dt )
     for i,v in ipairs( s.objects ) do
       if v.update then v:update( dt ) end
     end
-    s.cursor:update( dt )
     s.world:update( dt )
     s:cleanup()
   end,

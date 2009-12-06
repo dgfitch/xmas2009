@@ -6,7 +6,7 @@ Cursor = {
   colorCooldown = { 255,255,0,200 },
   color = { 255,255,255 },
   colorLine = { 0,0,0 },
-  destroyTime = 3.0,
+  destroyTime = 0.2,
 
   load = function( world )
     local self = {}
@@ -37,7 +37,6 @@ Cursor = {
 
   connect = function(s, x, y)
     if s.touching then
-      -- TODO: double check cursor is still touching
       s.joint = love.physics.newMouseJoint( s.touching.body, x, y )
       s.joint:setMaxForce(s.MAX_FORCE)
       s.connected = s.touching
@@ -46,14 +45,27 @@ Cursor = {
 
   destroy = function(s, x, y)
     if s.cooldown <= 0 then
+      local destroyed
       if s.connected and s.joint then
+        destroyed = s.connected
         s.connected.dead = true
         s:disconnect()
-        s.cooldown = s.destroyTime
       elseif s.touching then
+        destroyed = s.touching
         s.touching.dead = true
         s.touching = nil
+      end
+      if destroyed then
         s.cooldown = s.destroyTime
+        local explosion
+        local x, y = destroyed.body:getPosition()
+        local size = destroyed.body:getMass()
+        if destroyed.broken then
+          explosion = DustExplosion:create(x, y, 30, 1.0 + (size / 10))
+        else
+          explosion = FireyExplosion:create(x, y, 50, 1.0 + (size / 10))
+        end
+        states.game:add(explosion)
       end
     end
   end,
