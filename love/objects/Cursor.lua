@@ -35,15 +35,15 @@ Cursor = {
     end
   end,
 
-  connect = function(s, x, y)
-    if s.touching then
+  click = function(s, x, y)
+    if s.touching and s.touching:kindOf(Present) then
       s.joint = love.physics.newMouseJoint( s.touching.body, x, y )
       s.joint:setMaxForce(s.MAX_FORCE)
       s.connected = s.touching
     end
   end,
 
-  destroy = function(s, x, y)
+  clickr = function(s, x, y)
     if s.cooldown <= 0 then
       local destroyed
       if s.connected and s.joint then

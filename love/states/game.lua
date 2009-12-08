@@ -4,7 +4,7 @@ states.game = {
 
   initialize = function(s)
     s.time = 0.0
-    s.score = 0
+    s.speed = 0.01
 
     s.objects = {}
 
@@ -47,13 +47,48 @@ states.game = {
   end,
 
   update = function(s, dt)
-    s.time = s.time + (dt / 100)
     s.cursor:update( dt )
     for i,v in ipairs( s.objects ) do
       if v.update then v:update( dt ) end
     end
     s.world:update( dt )
+    s:updateTime( dt )
     s:cleanup()
+  end,
+
+  updateTime = function(s, dt)
+    s.time = s.time + (dt * s.speed)
+    if s.time >= 1.0 then 
+      s:updateScore()
+      changeState( states.over )
+    end
+  end,
+
+  updateScore = function(s)
+    local good = 0
+    local duds = 0
+    local coal = 0
+    for i,v in ipairs(s.objects) do
+      local inGoal = false
+      if not s.goal.poly:testPoint(v.body:getPosition()) then
+      end
+      if inGoal then
+        if v:kindOf(Present) then
+          if v.broken then
+            duds = duds + v.body:getMass()
+          else
+            good = good + v.body:getMass()
+          end
+        elseif v:kindOf(Coal) then 
+          coal = coal + v.body:getMass()
+        end
+      end
+    end
+    s.score = {
+      good = good,
+      duds = duds,
+      coal = coal,
+    }
   end,
 
   cleanup = function(s)
@@ -83,9 +118,9 @@ states.game = {
 
   mousepressed = function(s, x, y, b)
     if b == 'r' then
-      s.cursor:destroy( x, y )
+      s.cursor:clickr( x, y )
     elseif b == 'l' then
-      s.cursor:connect( x, y )
+      s.cursor:click( x, y )
     end
   end,
 

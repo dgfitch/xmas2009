@@ -6,6 +6,7 @@ Present = {
     mixin( self, Present )
     mixin( self, DrawablePoly )
     mixin( self, Destroyable )
+    mixin( self, Grabbable )
     self.body = love.physics.newBody( world, x, y, 0, 0.1 )
     self.body:setAngularDamping(0.1)
 
@@ -13,9 +14,7 @@ Present = {
     self.height = (math.random(60) + 30) * SIZE
 
     self.colorLine = { 0, 0, 0 }
-    if color then
-      self.color = color
-    elseif math.random() < 0.5 then
+    if math.random() < 0.5 then
       self.color = { math.random(100,255), 0, 0 }
     else
       self.color = { 0, math.random(100,255), 0 }
