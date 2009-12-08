@@ -1,6 +1,6 @@
 isA = function(object, class)
   if object == nil then return false end
-  if object == class or object.class == class then return true end
+  if object == class or (object.class and object.class == class) then return true end
   return isA(object.super,class)
 end
 

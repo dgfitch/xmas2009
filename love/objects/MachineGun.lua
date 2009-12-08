@@ -2,7 +2,7 @@ require "objects/DrawablePoly.lua"
 
 MachineGun = {
   intensity = 30,
-  time = 4.0, 
+  time = 1.5, 
 
   load = function( world, x, y, orientation )
     local self = {}
@@ -16,6 +16,7 @@ MachineGun = {
     self.orientation = orientation
     self.color = { 150, 120, 130 }
     self.cooldown = math.random()
+    self.time = self.time + (math.random() / 10.0)
 
     self.poly = love.physics.newRectangleShape( self.body, 0, 0, SIZE * 60, SIZE * 60, 0 )
     self.poly:setSensor(true)
@@ -29,7 +30,7 @@ MachineGun = {
     cx = math.cos(self.orientation) * self.intensity
     cy = math.sin(self.orientation) * self.intensity
     p.body:applyImpulse(cx, cy, self.x, self.y)
-    self.cooldown = math.random()
+    self.cooldown = states.game.time
   end,
 
   update = function(self, dt)

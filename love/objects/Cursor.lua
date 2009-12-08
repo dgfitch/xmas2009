@@ -36,7 +36,7 @@ Cursor = {
   end,
 
   click = function(s, x, y)
-    if s.touching and s.touching:kindOf(Present) then
+    if s.touching then
       s.joint = love.physics.newMouseJoint( s.touching.body, x, y )
       s.joint:setMaxForce(s.MAX_FORCE)
       s.connected = s.touching
@@ -60,14 +60,20 @@ Cursor = {
         local explosion
         local x, y = destroyed.body:getPosition()
         local size = destroyed.body:getMass()
-        if destroyed.broken then
-          explosion = DustExplosion:create(x, y, 30, 1.0 + (size / 10))
-        else
-          explosion = FireyExplosion:create(x, y, 50, 1.0 + (size / 10))
-          local num = math.random(3,5)
+        local num
+        if destroyed:kindOf(Present) then
+          if destroyed.broken then
+            explosion = DustExplosion:create(x, y, 30, 1.0 + (size / 10))
+            num = math.random(1,2)
+          else
+            explosion = FireyExplosion:create(x, y, 50, 1.0 + (size / 10))
+            num = math.random(3,6)
+          end
           for i = 1,num do
             states.game:addCoal(x, y)
           end
+        else
+          explosion = DustExplosion:create(x, y, 20, 1.0 + (size / 15))
         end
         states.game:add(explosion)
       end

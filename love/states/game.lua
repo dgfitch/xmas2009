@@ -4,7 +4,7 @@ states.game = {
 
   initialize = function(s)
     s.time = 0.0
-    s.speed = 0.1
+    s.speed = 0.05
 
     s.objects = {}
 
