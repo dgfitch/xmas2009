@@ -61,13 +61,18 @@ Cursor = {
         local x, y = destroyed.body:getPosition()
         local size = destroyed.body:getMass()
         local num
+        if states.game.goal:contains(destroyed) then
+          num = 3
+        else
+          num = 0
+        end
         if destroyed:kindOf(Present) then
           if destroyed.broken then
             explosion = DustExplosion:create(x, y, 30, 1.0 + (size / 10))
-            num = math.random(1,2)
+            num = num - math.random(2)
           else
             explosion = FireyExplosion:create(x, y, 50, 1.0 + (size / 10))
-            num = math.random(3,6)
+            num = num * destroyed.body:getMass() + math.random(2)
           end
           for i = 1,num do
             states.game:addCoal(x, y)

@@ -9,7 +9,7 @@ Coal = {
     self.body = love.physics.newBody( world, x, y, 0, 0.1 )
     self.body:setAngularDamping(0.3)
 
-    self.size = (math.random(5) + 15) * SIZE
+    self.size = (math.random(5) + 10) * SIZE
 
     self.colorLine = { 0, 0, 0 }
     self.color = { 64, 64, 64 }

@@ -11,42 +11,54 @@ states.over = {
     local ratio = score.good / total
     love.graphics.print(string.format("ratio %g total %g good %g bad %g", ratio, total, score.good, bad), WIDTH / 3, 100)
 
-    local amount = ""
+    local amount = "You hear rumors that the elves are threatening to strike."
     local happy = "Some" 
     local sad = "some" 
-    if total > 200 then
-      amount = "The elf foreman tells you he's never seen such packing prowess!"
-    elseif total > 150 then
-      amount = "The elves are impressed with how much you crammed into the sleigh."
-    elseif total > 100 then
-      amount = "Around the year-end eggnog, the elves say you did a passable job of packing."
-    elseif total > 50 then
-      amount = "Bone-tired, the elves begin muttering complaints about how inefficient you were."
-    else
-      amount = "You hear rumors that the elves are threatening to strike."
+    if ratio > 0.5 then
+      if total > 160 then
+        amount = "Mrs. Claus and the elves throw you a huge party!"
+      elseif total > 140 then
+        amount = "The elf foreman tells you he's never seen such packing prowess!"
+      elseif total > 130 then
+        amount = "The elf workers are giddy and give you a huge hug."
+      elseif total > 120 then
+        amount = "The elves are surprised by how much you packed in."
+      elseif total > 110 then
+        amount = "The elves are impressed with how much you crammed into the sleigh."
+      elseif total > 100 then
+        amount = "Around the year-end eggnog, the elves say you did a passable job of packing."
+      elseif total > 50 then
+        amount = "Bone-tired, the elves begin muttering complaints about how inefficient you were."
+      end
     end
     love.graphics.print(amount, WIDTH / 6, 440)
 
     if ratio >= 1.0 then
       happy = "All of the"
-      sad = "there's always next year to screw up..."
+      sad = "there's always next year to screw up... Unbelievable job!"
+    elseif ratio > 0.95 then
+      happy = "Almost every single one of the"
+      sad = "and only a few were left out. Incredible skill!"
     elseif ratio > 0.9 then
       happy = "Almost all of the good"
-      sad = "but a handful were very sad."
+      sad = "and only a handful were disappointed. Amazing work!"
+    elseif ratio > 0.8 then
+      happy = "Almost all of the good"
+      sad = "and only a few kids are still sad. Good work!"
     elseif ratio > 0.7 then
       happy = "Most"
-      sad = "but some say that Santa is losing his touch."
+      sad = "but some say that Santa is losing his touch. Passable packing!"
     elseif ratio > 0.5 then
-      happy = "Over half"
-      sad = "but the others had a terrible Christmas."
-    elseif ratio > 0.3 then
+      happy = "Over half of the"
+      sad = "but the others had a terrible Christmas. It doesn't look great for next year..."
+    elseif ratio > 0.25 then
       happy = "Some"
       sad = "but many lose their faith in Santa."
-    elseif ratio > 0.2 then
-      happy = "Few"
+    elseif ratio > 0.1 then
+      happy = "Few of the good"
       sad = "because you ruined Christmas for a lot of poor children."
     else
-      happy = "No"
+      happy = "None of the poor"
       sad = "and the world stops believing in Santa Claus."
     end
        
@@ -55,7 +67,7 @@ states.over = {
   end,
 
   update = function(s)
-    if love.mouse.isDown( 'l' ) then
+    if love.mouse.isDown( 'l' ) and love.mouse.isDown( 'r' ) then
       changeState( states.menu )
     end
   end,

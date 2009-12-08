@@ -4,11 +4,12 @@ states.game = {
 
   initialize = function(s)
     s.time = 0.0
-    s.speed = 0.05
+    s.speed = 0.02
+    s.gravity = 250
 
     s.objects = {}
 
-    s.world = love.physics.newWorld( -10, -10, WIDTH + 10, HEIGHT + 10, 0, 400 )
+    s.world = love.physics.newWorld( -10, -10, WIDTH + 10, HEIGHT + 10, 0, s.gravity )
     s.world:setCallbacks( s.collisionAdd, nil, nil, nil )
 
     -- bounding
@@ -24,7 +25,7 @@ states.game = {
     s.goal = Goal.load( s.world,
       {
         { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
-        { WIDTH/6, HEIGHT*2/5, WIDTH - WIDTH/6, HEIGHT*2/5, WIDTH, HEIGHT, 0, HEIGHT },
+        --{ WIDTH/6, HEIGHT*2/5, WIDTH - WIDTH/6, HEIGHT*2/5, WIDTH, HEIGHT, 0, HEIGHT },
       } )
     --s:addWall( WIDTH/3 + WIDTH/16, HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / 2 )
     --s:addWall( WIDTH - (WIDTH/3 + WIDTH/16), HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / -2 )
