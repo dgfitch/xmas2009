@@ -4,16 +4,16 @@ isA = function(object, class)
   return isA(object.super,class)
 end
 
-kindOf = function(object, attrib)
+kindOf = function(object, thing)
   if object == nil then return false end
-  if object.isA(attrib) then return true end
+  if object.isA(thing) then return true end
   if object.mixins then
     for k,v in ipairs(object.mixins) do
-      if v == attrib then return true end
+      if v == thing then return true end
     end
   end
   if object.attributes == nil then return false end
-  return object.attributes[attrib] ~= nil
+  return object.attributes[thing] ~= nil
 end
 
 printall = function(object, name)

@@ -7,7 +7,7 @@ Coal = {
     mixin( self, DrawablePoly )
     mixin( self, Grabbable )
     self.body = love.physics.newBody( world, x, y, 0, 0.1 )
-    self.body:setAngularDamping(0.1)
+    self.body:setAngularDamping(0.3)
 
     self.size = (math.random(10) + 20) * SIZE
 

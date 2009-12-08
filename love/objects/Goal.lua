@@ -19,7 +19,11 @@ Goal = {
     return self
   end,
 
-  setAngle = function(s, a)
-    s.body:setAngle( a )
+  contains = function(self, o) 
+    if not o.body then return false end
+    for i,poly in ipairs(self.polys) do
+      if poly:testPoint(o.body:getPosition()) then return true end
+    end
+    return false
   end,
 }

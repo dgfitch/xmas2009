@@ -13,15 +13,17 @@ Present = {
     self.width = (math.random(60) + 30) * SIZE
     self.height = (math.random(60) + 30) * SIZE
 
-    self.colorLine = { 0, 0, 0 }
-    if math.random() < 0.5 then
-      self.color = { math.random(100,255), 0, 0 }
-    else
-      self.color = { 0, math.random(100,255), 0 }
-    end
-
+    local saturation = 0
     if math.random() < 0.5 then
       self.broken = true
+      saturation = math.random(80,160)
+    end
+
+    self.colorLine = { 0, 0, 0 }
+    if math.random() < 0.5 then
+      self.color = { math.random(100,255), saturation, saturation }
+    else
+      self.color = { saturation, math.random(100,255), saturation }
     end
 
     local r = math.random()
@@ -71,13 +73,7 @@ Present = {
       love.graphics.circle( 'line', x + bowx - bowax, y + bowy - boway, self.width / 5, 13 )
     end
     
-    if states.game.cursor.connected == self then
-      DrawablePoly.draw(self, 4)
-    elseif states.game.cursor.touching == self then
-      DrawablePoly.draw(self, 2)
-    else
-      DrawablePoly.draw(self)
-    end
+    DrawablePoly.draw(self)
 
     -- ribbons over package
     love.graphics.setColor( unpack( self.colorRibbon ) )

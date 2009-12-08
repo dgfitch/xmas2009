@@ -1,5 +1,11 @@
 DrawablePoly = {
   draw = function( self, lineWidth )
+    if states.game.cursor.connected == self then
+      lineWidth = 4
+    elseif states.game.cursor.touching == self then
+      lineWidth = 2
+    end
+
     love.graphics.setColor( unpack( self.color ) )
     if self.poly then
       self:drawPoly(self.poly, lineWidth)

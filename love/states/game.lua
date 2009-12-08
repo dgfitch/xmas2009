@@ -4,7 +4,7 @@ states.game = {
 
   initialize = function(s)
     s.time = 0.0
-    s.speed = 0.01
+    s.speed = 0.1
 
     s.objects = {}
 
@@ -20,8 +20,14 @@ states.game = {
     -- "level design" 
     s:addWall( WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
     s:addWall( WIDTH - WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
-    s:addWall( WIDTH/3 + WIDTH/16, HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / 2 )
-    s:addWall( WIDTH - (WIDTH/3 + WIDTH/16), HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / -2 )
+
+    s.goal = Goal.load( s.world,
+      {
+        { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
+        { WIDTH/6, HEIGHT*2/5, WIDTH - WIDTH/6, HEIGHT*2/5, WIDTH, HEIGHT, 0, HEIGHT },
+      } )
+    --s:addWall( WIDTH/3 + WIDTH/16, HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / 2 )
+    --s:addWall( WIDTH - (WIDTH/3 + WIDTH/16), HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / -2 )
 
     -- present firing guns
     local mx = 30 * SIZE
@@ -37,6 +43,7 @@ states.game = {
 
   draw = function(s)
     s.background:draw()
+    s.goal:draw()
     love.graphics.setColor( 255, 0, 0 )
     love.graphics.print("HAHA GAME LOL", 100, 20)
     for k,v in pairs(s.objects) do
@@ -69,18 +76,15 @@ states.game = {
     local duds = 0
     local coal = 0
     for i,v in ipairs(s.objects) do
-      local inGoal = false
-      if not s.goal.poly:testPoint(v.body:getPosition()) then
-      end
-      if inGoal then
-        if v:kindOf(Present) then
+      if s.goal:contains(v) then
+        if v:kindOf(Coal) then 
+          coal = coal + v.body:getMass()
+        elseif v:kindOf(Present) then
           if v.broken then
             duds = duds + v.body:getMass()
           else
             good = good + v.body:getMass()
           end
-        elseif v:kindOf(Coal) then 
-          coal = coal + v.body:getMass()
         end
       end
     end
@@ -135,6 +139,14 @@ states.game = {
     r:setRandomAngle()
     table.insert( s.objects, r )
     return r
+  end,
+
+  addCoal = function(s, x, y)
+    local o = Coal.load( s.world, x, y )
+    o:setRandomAngle()
+    o.body:applyImpulse(math.random(-2,2), math.random(-2,2), x, y)
+    table.insert( s.objects, o )
+    return o
   end,
 
   add = function(s, o)

@@ -24,7 +24,7 @@ Cursor = {
   end,
 
   touch = function(s, o)
-    if not o.dead then 
+    if not o.dead and o:kindOf(Grabbable) then 
       s.touching = o
     end
   end,
@@ -64,6 +64,10 @@ Cursor = {
           explosion = DustExplosion:create(x, y, 30, 1.0 + (size / 10))
         else
           explosion = FireyExplosion:create(x, y, 50, 1.0 + (size / 10))
+          local num = math.random(3,5)
+          for i = 1,num do
+            states.game:addCoal(x, y)
+          end
         end
         states.game:add(explosion)
       end
