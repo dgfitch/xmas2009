@@ -2,7 +2,7 @@ require "objects/DrawablePoly.lua"
 
 MachineGun = {
   intensity = 30,
-  time = 2.0, 
+  time = 3.0, 
 
   load = function( world, x, y, orientation, time, intensity )
     local self = {}

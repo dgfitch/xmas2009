@@ -60,28 +60,30 @@ states.game = {
       s.title = "Balancing Act"
 
       local h = HEIGHT * 4/5
-      local w1 = WIDTH / 3
-      local w2 = WIDTH * 2/3
+      local w1 = WIDTH / 5
+      local w2 = WIDTH * 4/5
       s:addWalls({ 
         { w1, h, w2, h, w2, h + s.wallSize, w1, h + s.wallSize },
       })
 
       s.goal = Goal.load( s.world,
         {
-          { 0, HEIGHT*1/5, WIDTH, HEIGHT*1/5, WIDTH, HEIGHT*4/5, 0, HEIGHT*4/5 },
+          { w1, 0, w2, 0, w2, h, w1, h },
         } )
 
-      s:add( MachineGun.load( s.world, WIDTH / 2, 30 * SIZE, math.halfpi * -1, 1.3, 1 ) )
+      s:add( MachineGun.load( s.world, WIDTH / 4, 30 * SIZE, math.halfpi * -1, nil, 1 ) )
+      s:add( MachineGun.load( s.world, WIDTH * 3/4, 30 * SIZE, math.halfpi * -1, nil, 1 ) )
     end,
 
     function(s)
       s.title = "Rapid Fire"
-      local h = HEIGHT * 3/5
-      local w1 = WIDTH/3
+
+      local h = HEIGHT * 2/3
+      local w1 = WIDTH / 3
       local w2 = WIDTH * 2/3
       s:addWalls({ 
-        { 0, h, w1, h, w1, h + s.wallSize, 0, h + s.wallSize },
-        { w2, h, WIDTH, h, WIDTH, h + s.wallSize, w2, h + s.wallSize },
+        { w1 - s.wallSize, h, w1 + s.wallSize, h, w1 + s.wallSize, HEIGHT, w1 - s.wallSize, HEIGHT },
+        { w2 - s.wallSize, h, w2 + s.wallSize, h, w2 + s.wallSize, HEIGHT, w2 - s.wallSize, HEIGHT } 
       })
 
       s.goal = Goal.load( s.world,
@@ -103,7 +105,7 @@ states.game = {
     if n > #s.levels then
       n = 2
     end
-    s:initialize(s.level + 1)
+    s:initialize(n)
   end,
 
   initialize = function(s, level)
