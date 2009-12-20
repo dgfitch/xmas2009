@@ -16,19 +16,19 @@ states.over = {
 
     local amount = "Bone-tired, the elves begin muttering complaints about how inefficient you were."
     if ratio > 0.95 then
-      amount = "Mrs. Claus and the elves throw you a huge party!"
+      amount = "Mrs. Claus and the elves throw you a huge party! No presents were wasted."
     elseif ratio > 0.9 then
-      amount = "The elf foreman tells you he's never seen such packing prowess!"
+      amount = "The elf foreman tells you he's never seen such packing prowess! Almost no presents went wasted."
     elseif ratio > 0.8 then
-      amount = "The elf workers are giddy and give you a huge hug."
+      amount = "The elf workers are giddy and give you a huge hug. The majority of good presents reached their targets!"
     elseif ratio > 0.7 then
-      amount = "The elves are surprised by how much you packed in."
+      amount = "The elves are surprised by how much you packed in, but some presents were left behind."
     elseif ratio > 0.6 then
-      amount = "The elves are impressed with how much you crammed into the sleigh."
+      amount = "The elves are impressed with how much you crammed into the sleigh, but you can do better..."
     elseif ratio > 0.5 then
-      amount = "Around the year-end eggnog, the elves say you did a passable job of packing."
+      amount = "Around the year-end eggnog, the elves say you did a passable job of packing, but they think next year will be better"
     elseif ratio > 0.25 then
-      amount = "The overworked elves are confused by how few of their toys made it."
+      amount = "The overworked elves are confused by how few of their toys made it to the kids."
     end
     p(amount, 440)
 
@@ -36,7 +36,7 @@ states.over = {
     local sad = "some" 
     if percent >= 1.0 then
       happy = "All of the"
-      sad = "there's always next year to screw up... Unbelievable job!"
+      sad = "and nothing went wrong... Unbelievable job!"
     elseif percent > 0.95 then
       happy = "Almost every single one of the"
       sad = "and only a few were left out. Incredible skill!"

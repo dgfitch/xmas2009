@@ -1,11 +1,13 @@
 -- a machine gun that shoots presents
 states.game = {
   wallColor = {100,100,100},
-  wallSize = SIZE * 5,
+  wallSize = SIZE * 10,
+  title = "Unknown",
+  levelCount = 0,
 
   levels = {
-    -- Tutorial level
     function(s)
+      s.title = "Tutorial"
       local h = HEIGHT * 2 / 3
       s:addWalls({ { WIDTH/2 - s.wallSize, h, WIDTH/2 + s.wallSize, h, WIDTH/2 + s.wallSize, HEIGHT, WIDTH/2 - s.wallSize, HEIGHT } })
 
@@ -14,13 +16,12 @@ states.game = {
           { WIDTH/2, 0, WIDTH, 0, WIDTH, HEIGHT, WIDTH/2, HEIGHT },
         } )
 
-      local mx = 30 * SIZE
-      local my = 30 * SIZE
-      s:add( MachineGun.load( s.world, mx, my, math.pi / 4 ) )
+      local m = 30 * SIZE
+      s:add( MachineGun.load( s.world, m, m, math.pi / 4, 2.0 ) )
     end,
     
-    -- Vertical 2 guns
     function(s)
+      s.title = "Into the Sleigh"
       local h = HEIGHT * 3/5
       local w1 = WIDTH/3
       local w2 = WIDTH * 2/3
@@ -40,10 +41,65 @@ states.game = {
       s:add( MachineGun.load( s.world, mx, my, 0 ) )
       s:add( MachineGun.load( s.world, WIDTH - mx, my, math.pi * -1 ) )
     end,
+    
+    function(s)
+      s.title = "The Squish Factory"
+
+      s.goal = Goal.load( s.world,
+        {
+          { 0, HEIGHT*1/5, WIDTH, HEIGHT*1/5, WIDTH, HEIGHT, 0, HEIGHT },
+        } )
+
+      local mx = 30 * SIZE
+      local my = HEIGHT - 30 * SIZE
+      s:add( MachineGun.load( s.world, mx, my, math.halfpi * -1, 1.6, 10  ) )
+      s:add( MachineGun.load( s.world, WIDTH - mx, my, math.halfpi * -1, 1.6, 10 ) )
+    end,
+    
+    function(s)
+      s.title = "Balancing Act"
+
+      local h = HEIGHT * 4/5
+      local w1 = WIDTH / 3
+      local w2 = WIDTH * 2/3
+      s:addWalls({ 
+        { w1, h, w2, h, w2, h + s.wallSize, w1, h + s.wallSize },
+      })
+
+      s.goal = Goal.load( s.world,
+        {
+          { 0, HEIGHT*1/5, WIDTH, HEIGHT*1/5, WIDTH, HEIGHT*4/5, 0, HEIGHT*4/5 },
+        } )
+
+      s:add( MachineGun.load( s.world, WIDTH / 2, 30 * SIZE, math.halfpi * -1, 1.3, 1 ) )
+    end,
+
+    function(s)
+      s.title = "Rapid Fire"
+      local h = HEIGHT * 3/5
+      local w1 = WIDTH/3
+      local w2 = WIDTH * 2/3
+      s:addWalls({ 
+        { 0, h, w1, h, w1, h + s.wallSize, 0, h + s.wallSize },
+        { w2, h, WIDTH, h, WIDTH, h + s.wallSize, w2, h + s.wallSize },
+      })
+
+      s.goal = Goal.load( s.world,
+        {
+          { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
+        } )
+
+      -- present firing guns
+      local mx = 30 * SIZE
+      local my = 30 * SIZE
+      s:add( MachineGun.load( s.world, mx, my, 0, 1.5, 120 ) )
+      s:add( MachineGun.load( s.world, WIDTH - mx, my, math.pi * -1, 1.51, 120 ) )
+    end,
   },
 
   nextLevel = function(s)
     local n = s.level + 1
+    s.levelCount = s.levelCount + 1
     if n > #s.levels then
       n = 2
     end
@@ -82,11 +138,14 @@ states.game = {
   draw = function(s)
     s.background:draw()
     s.goal:draw()
-    love.graphics.setColor( 255, 0, 0 )
     for k,v in pairs(s.objects) do
       if v.draw then v:draw() end
     end
     s.background:drawOverlay()
+    love.graphics.setColor( 255, 0, 0, 255 )
+    local size = 24 * SIZE
+    love.graphics.setFont(size)
+    p(s.title, 10 + size)
     s.cursor:draw()
   end,
 
@@ -152,7 +211,7 @@ states.game = {
   keypressed = function(s, k)
     --debugging yay
     if k == '1' then
-      --s.gun1:fire()
+      s:nextLevel()
     end
   end,
 

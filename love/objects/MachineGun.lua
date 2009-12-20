@@ -2,14 +2,16 @@ require "objects/DrawablePoly.lua"
 
 MachineGun = {
   intensity = 30,
-  time = 1.5, 
+  time = 2.0, 
 
-  load = function( world, x, y, orientation )
+  load = function( world, x, y, orientation, time, intensity )
     local self = {}
     mixin( self, MachineGun )
     mixin( self, DrawablePoly )
     self.x = x
     self.y = y
+    if time then self.time = time end
+    if intensity then self.intensity = intensity end
     self.body = love.physics.newBody( world, x, y, 0, 0 )
     self.world = world
 
@@ -35,6 +37,8 @@ MachineGun = {
 
   update = function(self, dt)
     self.cooldown = self.cooldown + dt
-    if self.cooldown > self.time then self:fire() end
+    if self.cooldown > self.time and states.game.time < 0.95 then
+      self:fire()
+    end
   end,
 }
