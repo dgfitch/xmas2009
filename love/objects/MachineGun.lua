@@ -18,7 +18,7 @@ MachineGun = {
     self.cooldown = math.random()
     self.time = self.time + (math.random() / 10.0)
 
-    self.poly = love.physics.newRectangleShape( self.body, 0, 0, SIZE * 60, SIZE * 60, 0 )
+    self.poly = love.physics.newRectangleShape( self.body, 0, 0, SIZE * 60, SIZE * 60, orientation )
     self.poly:setSensor(true)
     self.poly:setData(self)
     return self

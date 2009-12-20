@@ -1,7 +1,9 @@
 states.menu = {
   draw = function(s)
-    love.graphics.print("HAIRY!!!!", WIDTH / 2, 300)
-    love.graphics.print("Click to begin", WIDTH / 2, 340)
+    love.graphics.setFont(100)
+    p("HAIRY XMAS!", HEIGHT / 3)
+    love.graphics.setFont(28)
+    p("Click to begin", HEIGHT * 3 / 4)
   end,
 
   update = function(s)

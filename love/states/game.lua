@@ -1,11 +1,61 @@
 -- a machine gun that shoots presents
 states.game = {
   wallColor = {100,100,100},
+  wallSize = SIZE * 5,
 
-  initialize = function(s)
+  levels = {
+    -- Tutorial level
+    function(s)
+      local h = HEIGHT * 2 / 3
+      s:addWalls({ { WIDTH/2 - s.wallSize, h, WIDTH/2 + s.wallSize, h, WIDTH/2 + s.wallSize, HEIGHT, WIDTH/2 - s.wallSize, HEIGHT } })
+
+      s.goal = Goal.load( s.world,
+        {
+          { WIDTH/2, 0, WIDTH, 0, WIDTH, HEIGHT, WIDTH/2, HEIGHT },
+        } )
+
+      local mx = 30 * SIZE
+      local my = 30 * SIZE
+      s:add( MachineGun.load( s.world, mx, my, math.pi / 4 ) )
+    end,
+    
+    -- Vertical 2 guns
+    function(s)
+      local h = HEIGHT * 3/5
+      local w1 = WIDTH/3
+      local w2 = WIDTH * 2/3
+      s:addWalls({ 
+        { 0, h, w1, h, w1, h + s.wallSize, 0, h + s.wallSize },
+        { w2, h, WIDTH, h, WIDTH, h + s.wallSize, w2, h + s.wallSize },
+      })
+
+      s.goal = Goal.load( s.world,
+        {
+          { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
+        } )
+
+      -- present firing guns
+      local mx = 30 * SIZE
+      local my = 30 * SIZE
+      s:add( MachineGun.load( s.world, mx, my, 0 ) )
+      s:add( MachineGun.load( s.world, WIDTH - mx, my, math.pi * -1 ) )
+    end,
+  },
+
+  nextLevel = function(s)
+    local n = s.level + 1
+    if n > #s.levels then
+      n = 2
+    end
+    s:initialize(s.level + 1)
+  end,
+
+  initialize = function(s, level)
+    s.level = level or 1
     s.time = 0.0
     s.speed = 0.02
-    s.gravity = 250
+    s.gravity = 400
+    s.produced = 0
 
     s.objects = {}
 
@@ -13,28 +63,15 @@ states.game = {
     s.world:setCallbacks( s.collisionAdd, nil, nil, nil )
 
     -- bounding
-    s:addWall( WIDTH/2, -10, WIDTH + 10, 10 )
-    s:addWall( -10, HEIGHT/2, 10, HEIGHT + 10 )
-    s:addWall( WIDTH + 10, HEIGHT/2, 10, HEIGHT + 10 )
-    s:addWall( WIDTH/2, HEIGHT + 10, WIDTH + 10, 10 )
+    s:addWalls({
+      { -10, -10, WIDTH + 10, -10, WIDTH + 10, 0, -10, 0 },
+      { -10, -10, 0, -10, 0, HEIGHT + 10, -10, HEIGHT + 10 },
+      { WIDTH, -10, WIDTH + 10, -10, WIDTH + 10, HEIGHT + 10, WIDTH, HEIGHT + 10 },
+      { -10, HEIGHT, WIDTH + 10, HEIGHT, WIDTH + 10, HEIGHT + 10, -10, HEIGHT + 10 },
+    })
 
-    -- "level design" 
-    s:addWall( WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
-    s:addWall( WIDTH - WIDTH/6, HEIGHT*3/5, WIDTH/2.7, 10 * SIZE )
-
-    s.goal = Goal.load( s.world,
-      {
-        { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
-        --{ WIDTH/6, HEIGHT*2/5, WIDTH - WIDTH/6, HEIGHT*2/5, WIDTH, HEIGHT, 0, HEIGHT },
-      } )
-    --s:addWall( WIDTH/3 + WIDTH/16, HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / 2 )
-    --s:addWall( WIDTH - (WIDTH/3 + WIDTH/16), HEIGHT*2/3, WIDTH/7, 10 * SIZE, math.halfpi / -2 )
-
-    -- present firing guns
-    local mx = 30 * SIZE
-    local my = 40 * SIZE
-    s.gun1 = s:add( MachineGun.load( s.world, mx, my, 0 ) )
-    s.gun2 = s:add( MachineGun.load( s.world, WIDTH - mx, my, math.pi * -1 ) )
+    -- init level
+    s.levels[s.level](s)
     
     s.cursor = Cursor.load( s.world )
     love.mouse.setVisible( false )
@@ -46,7 +83,6 @@ states.game = {
     s.background:draw()
     s.goal:draw()
     love.graphics.setColor( 255, 0, 0 )
-    love.graphics.print("HAHA GAME LOL", 100, 20)
     for k,v in pairs(s.objects) do
       if v.draw then v:draw() end
     end
@@ -90,6 +126,7 @@ states.game = {
       end
     end
     s.score = {
+      produced = s.produced,
       good = good,
       duds = duds,
       coal = coal,
@@ -115,9 +152,7 @@ states.game = {
   keypressed = function(s, k)
     --debugging yay
     if k == '1' then
-      s.gun1:fire()
-    elseif k == '2' then
-      s.gun2:fire()
+      --s.gun1:fire()
     end
   end,
 
@@ -138,6 +173,7 @@ states.game = {
   addPresent = function(s, x, y)
     local r = Present.load( s.world, x, y )
     r:setRandomAngle()
+    if not r.broken then s.produced = s.produced + r.body:getMass() end
     table.insert( s.objects, r )
     return r
   end,
@@ -161,9 +197,8 @@ states.game = {
     return r
   end,
 
-  addWall = function(s, x, y, w, h, a)
-    local w = SimpleRect.load( s.world, x, y, w, h, s.wallColor, true )
-    if a then w:setAngle(a) end
+  addWalls = function(s, polys)
+    local w = Wall.load( s.world, polys)
     table.insert( s.objects, w )
     return w
   end,

@@ -1,4 +1,5 @@
 require "load.lua"
+require "lib/common.lua"
 require "lib/oo.lua"
 require "lib/math.lua"
 require "states.lua"

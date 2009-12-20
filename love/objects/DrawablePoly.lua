@@ -24,5 +24,16 @@ DrawablePoly = {
       love.graphics.setColor( unpack( self.colorLine ) )
       love.graphics.polygon( 'line', poly:getPoints() )
     end
+  end,
+
+  loadPolys = function( self, polys )
+    self.polys = {}
+    for i,poly in ipairs(polys) do
+      local p = love.physics.newPolygonShape( self.body, unpack(poly) )
+      p:setData(self)
+      if self.sensor then p:setSensor(true) end
+      if self.restitution then p:setRestitution(self.restitution) end
+      table.insert(self.polys, p)
+    end
   end
 }

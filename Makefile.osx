@@ -1,4 +1,4 @@
-LOVE?= /Applications/love20091124.app/Contents/MacOS/love
+LOVE?= /Applications/love20091214.app/Contents/MacOS/love
 BROWSER?=open
 LUA?=lua
 RM?=rm -f
