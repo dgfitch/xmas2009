@@ -143,9 +143,9 @@ states.game = {
     end
     s.background:drawOverlay()
     love.graphics.setColor( 255, 0, 0, 255 )
-    local size = 24 * SIZE
-    love.graphics.setFont(size)
-    p(s.title, 10 + size)
+    love.graphics.setFont(12)
+    p(s.title, 10)
+    T:draw()
     s.cursor:draw()
   end,
 
@@ -157,6 +157,7 @@ states.game = {
     s.world:update( dt )
     s:updateTime( dt )
     s:cleanup()
+    T:update(dt)
   end,
 
   updateTime = function(s, dt)
