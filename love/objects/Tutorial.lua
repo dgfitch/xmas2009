@@ -1,5 +1,5 @@
 Tutorial = {
-  display = 5.0,
+  display = 10.0,
   time = 0,
   text = "UNDEFINED",
 
@@ -19,6 +19,9 @@ Tutorial = {
   end,
 
   update = function(self, dt)
+    if self.object.dead then
+      self.active = false
+    end
     if self.active then
       self.time = self.time + dt
     end
@@ -30,8 +33,9 @@ Tutorial = {
 
   draw = function(self)
     local x,y = self.object.body:getPosition()
-    love.graphics.printf(self.text, x, y, WIDTH / 2, "left")
-    p(x, 200)
+    love.graphics.setFont(14)
+    love.graphics.setColor( 0, 0, 0, 255 )
+    love.graphics.printf(self.text, x, y, WIDTH / 4, "center")
   end,
 
   stop = function(self)

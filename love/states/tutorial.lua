@@ -37,7 +37,7 @@ states.tutorial = {
     t({
       text = "This is a Wall. Uh, that should be self explanatory, right?",
       trigger = function(object)
-        return object:kindOf(Wall)
+        return object:kindOf(Wall) and not object.bounding
       end,
     }),
   },

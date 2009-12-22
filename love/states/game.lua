@@ -16,7 +16,7 @@ states.game = {
         } )
 
       local m = 30 * SIZE
-      s:add( MachineGun.load( s.world, m, m, math.pi / 4, 2.0 ) )
+      s:add( MachineGun.load( s.world, m, m, math.pi / 4, 4.0 ) )
     end,
     
     function(s)
@@ -124,7 +124,7 @@ states.game = {
       { -10, -10, 0, -10, 0, HEIGHT + 10, -10, HEIGHT + 10 },
       { WIDTH, -10, WIDTH + 10, -10, WIDTH + 10, HEIGHT + 10, WIDTH, HEIGHT + 10 },
       { -10, HEIGHT, WIDTH + 10, HEIGHT, WIDTH + 10, HEIGHT + 10, -10, HEIGHT + 10 },
-    })
+    }, true)
 
     -- init level
     s.levels[s.level](s)
@@ -143,8 +143,8 @@ states.game = {
     end
     s.background:drawOverlay()
     love.graphics.setColor( 255, 0, 0, 255 )
-    love.graphics.setFont(12)
-    p(s.title, 10)
+    love.graphics.setFont(24)
+    p(s.title, 30)
     T:draw()
     s.cursor:draw()
   end,
@@ -257,8 +257,8 @@ states.game = {
     return r
   end,
 
-  addWalls = function(s, polys)
-    local w = Wall.load( s.world, polys)
+  addWalls = function(s, polys, bounding)
+    local w = Wall.load( s.world, polys, bounding )
     table.insert( s.objects, w )
     return w
   end,

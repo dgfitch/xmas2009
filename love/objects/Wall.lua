@@ -3,11 +3,12 @@ require "objects/DrawablePoly.lua"
 Wall = {
   restitution = 0.1,
 
-  load = function( world, polys )
+  load = function( world, polys, bounding )
     local self = {}
     mixin( self, Wall )
     mixin( self, DrawablePoly )
     self.body = love.physics.newBody( world, x, y, 0, 0 )
+    self.bounding = bounding
 
     self.color = { 64, 64, 64, 255 }
     self:loadPolys( polys )
