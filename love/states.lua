@@ -1,9 +1,9 @@
 states = {}
-states.base = {
+State = {
   draw = function(s) end,
   update = function(s, dt) end,
-  activate = function(s, dt) end,
-  initialize = function(s, dt) end,
+  activate = function(s) end,
+  initialize = function(s) end,
 }
 
 function changeState(i)

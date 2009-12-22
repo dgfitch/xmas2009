@@ -14,4 +14,4 @@ states.menu = {
   end,
 }
 
-mixin( states.menu, states.base )
+mixin( states.menu, State )

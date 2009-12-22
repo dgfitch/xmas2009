@@ -77,4 +77,4 @@ states.over = {
   end,
 }
 
-mixin( states.over, states.base )
+mixin( states.over, State )

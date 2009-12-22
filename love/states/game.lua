@@ -1,4 +1,3 @@
--- a machine gun that shoots presents
 states.game = {
   wallColor = {100,100,100},
   wallSize = SIZE * 10,
@@ -35,7 +34,6 @@ states.game = {
           { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
         } )
 
-      -- present firing guns
       local mx = 30 * SIZE
       local my = 30 * SIZE
       s:add( MachineGun.load( s.world, mx, my, 0 ) )
@@ -289,7 +287,7 @@ states.game = {
 
 }
 
-mixin( states.game, states.base )
+mixin( states.game, State )
 
 try = function(object1, object2, collisionPoint, predicate1, predicate2, interaction)
   if predicate1(object1) and predicate2(object2) then
