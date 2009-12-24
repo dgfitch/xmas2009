@@ -155,6 +155,7 @@ states.game = {
       if v.update then v:update( dt ) end
     end
     s.world:update( dt )
+    s.background:update( dt )
     s:updateTime( dt )
     s:cleanup()
     T:update(dt)

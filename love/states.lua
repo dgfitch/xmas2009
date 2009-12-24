@@ -12,4 +12,5 @@ function changeState(i)
 end
 
 requireDir "states/"
+states.menu:initialize()
 changeState(states.menu)
