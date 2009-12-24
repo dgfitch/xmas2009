@@ -8,15 +8,15 @@ states.game = {
     function(s)
       s.title = "Tutorial"
       local h = HEIGHT * 2 / 3
-      s:addWalls({ { WIDTH/2 - s.wallSize, h, WIDTH/2 + s.wallSize, h, WIDTH/2 + s.wallSize, HEIGHT, WIDTH/2 - s.wallSize, HEIGHT } })
 
-      s.goal = Goal.load( s.world,
-        {
+      s:addGoal( {
           { WIDTH/2, 0, WIDTH, 0, WIDTH, HEIGHT, WIDTH/2, HEIGHT },
         } )
 
+      s:addWalls({ { WIDTH/2 - s.wallSize, h, WIDTH/2 + s.wallSize, h, WIDTH/2 + s.wallSize, HEIGHT, WIDTH/2 - s.wallSize, HEIGHT } })
+
       local m = 30 * SIZE
-      s:add( MachineGun.load( s.world, m, m, math.pi / 4, 4.0 ) )
+      s:add( MachineGun.load( s.world, m, m, math.pi / 4, 4.0, 20 ) )
     end,
     
     function(s)
@@ -24,15 +24,15 @@ states.game = {
       local h = HEIGHT * 3/5
       local w1 = WIDTH/3
       local w2 = WIDTH * 2/3
+
+      s:addGoal( {
+          { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
+        } )
+
       s:addWalls({ 
         { 0, h, w1, h, w1, h + s.wallSize, 0, h + s.wallSize },
         { w2, h, WIDTH, h, WIDTH, h + s.wallSize, w2, h + s.wallSize },
       })
-
-      s.goal = Goal.load( s.world,
-        {
-          { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
-        } )
 
       local mx = 30 * SIZE
       local my = 30 * SIZE
@@ -43,8 +43,7 @@ states.game = {
     function(s)
       s.title = "The Squish Factory"
 
-      s.goal = Goal.load( s.world,
-        {
+      s:addGoal( {
           { 0, HEIGHT*1/5, WIDTH, HEIGHT*1/5, WIDTH, HEIGHT, 0, HEIGHT },
         } )
 
@@ -60,14 +59,14 @@ states.game = {
       local h = HEIGHT * 4/5
       local w1 = WIDTH / 5
       local w2 = WIDTH * 4/5
+
+      s:addGoal( {
+          { w1, 0, w2, 0, w2, h, w1, h },
+        } )
+
       s:addWalls({ 
         { w1, h, w2, h, w2, h + s.wallSize, w1, h + s.wallSize },
       })
-
-      s.goal = Goal.load( s.world,
-        {
-          { w1, 0, w2, 0, w2, h, w1, h },
-        } )
 
       s:add( MachineGun.load( s.world, WIDTH / 4, 30 * SIZE, math.halfpi * -1, nil, 1 ) )
       s:add( MachineGun.load( s.world, WIDTH * 3/4, 30 * SIZE, math.halfpi * -1, nil, 1 ) )
@@ -84,8 +83,7 @@ states.game = {
         { w2 - s.wallSize, h, w2 + s.wallSize, h, w2 + s.wallSize, HEIGHT, w2 - s.wallSize, HEIGHT } 
       })
 
-      s.goal = Goal.load( s.world,
-        {
+      s:addGoal( {
           { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
         } )
 
@@ -110,7 +108,7 @@ states.game = {
     s.level = level or 1
     s.time = 0.0
     s.speed = 0.02
-    s.gravity = 400
+    s.gravity = 200
     s.produced = 0
 
     s.objects = {}
@@ -134,12 +132,9 @@ states.game = {
   end,
 
   draw = function(s)
-    s.background:draw()
-    s.goal:draw()
     for k,v in pairs(s.objects) do
       if v.draw then v:draw() end
     end
-    s.background:drawOverlay()
     love.graphics.setColor( 255, 0, 0, 255 )
     love.graphics.setFont(24)
     p(s.title, 30)
@@ -153,7 +148,6 @@ states.game = {
       if v.update then v:update( dt ) end
     end
     s.world:update( dt )
-    s.background:update( dt )
     s:updateTime( dt )
     s:cleanup()
     T:update(dt)
@@ -163,7 +157,6 @@ states.game = {
     s.time = s.time + (dt * s.speed)
     if s.time >= 1.0 then 
       s:updateScore()
-      states.over.background = s.background
       changeState( states.over )
     end
   end,
@@ -244,6 +237,13 @@ states.game = {
     o.body:applyImpulse(math.random(-2,2), math.random(-2,2), x, y)
     table.insert( s.objects, o )
     return o
+  end,
+
+  addGoal = function(s, opts)
+    local g = Goal.load( s.world, opts )
+    s.goal = g
+    table.insert( s.objects, g )
+    return g
   end,
 
   add = function(s, o)

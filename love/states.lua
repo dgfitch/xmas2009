@@ -7,6 +7,7 @@ State = {
 }
 
 function changeState(i)
+  background.owner = i
   S = i
   S:activate()
 end

@@ -17,11 +17,29 @@ DrawablePoly = {
     love.graphics.setColor( 0, 0, 0 )
   end,
 
+  getPosition = function( self )
+    local shape
+    if self.poly then
+      shape = self.poly
+    elseif self.polys then
+      shape = self.polys[1]
+    end
+
+    local x, y = shape:getPoints()
+
+    return { x, y }
+  end,
+
   drawPoly = function( self, poly, lineWidth ) 
     love.graphics.polygon( 'fill', poly:getPoints() )
     if self.colorLine then
       love.graphics.setLineWidth( (lineWidth or 1) * SIZE )
       love.graphics.setColor( unpack( self.colorLine ) )
+      love.graphics.polygon( 'line', poly:getPoints() )
+    end
+    if self.tutorial then
+      love.graphics.setLineWidth( 4 * SIZE )
+      love.graphics.setColor( 255, 0, 0, 0 )
       love.graphics.polygon( 'line', poly:getPoints() )
     end
   end,

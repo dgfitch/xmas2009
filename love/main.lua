@@ -2,18 +2,23 @@ require "load.lua"
 require "lib/common.lua"
 require "lib/oo.lua"
 require "lib/math.lua"
-require "states.lua"
 requireDir "objects/"
+background = Background.load()
+require "states.lua"
+
 
 function love.draw()
   love.graphics.setCaption( 'Hairy Xmas! | FPS: ' .. love.timer.getFPS() )
+  background:draw()
   S:draw()
+  background:drawOverlay()
 end
 
 function love.update(dt)
 	if love.keyboard.isDown( 'escape' ) then
     love.event.push('q')
 	end
+  background:update(dt)
   S:update(dt)
 end
 

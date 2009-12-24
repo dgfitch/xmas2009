@@ -1,17 +1,21 @@
 states.over = {
   draw = function(s)
     local score = states.game.score
+    love.graphics.setColor(0,0,0,255)
     love.graphics.setFont(48)
     p("SANTA HAS DEPARTED", 220)
     love.graphics.setFont(12)
     p("This year, you and the elves have shipped:", 300)
+
     p(string.format("%g pounds of good presents", score.good), 340)
     p(string.format("%g pounds of broken presents", score.duds), 370)
     p(string.format("%g pounds of coal", score.coal), 400)
+
     local bad = score.duds + score.coal
     local total = score.good + bad
     local ratio = score.good / score.produced
     local percent = score.good / total
+
     p(string.format("ratio %g total %g good %g bad %g", ratio, total, score.good, bad), 20)
 
     local amount = "Bone-tired, the elves begin muttering complaints about how inefficient you were."
@@ -69,7 +73,7 @@ states.over = {
     p("Press both mouse buttons to continue or ESC to quit", 520)
   end,
 
-  update = function(s)
+  update = function(s, dt)
     if love.mouse.isDown( 'l' ) and love.mouse.isDown( 'r' ) then
       states.game:nextLevel()
       changeState( states.game )

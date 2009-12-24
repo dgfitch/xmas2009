@@ -2,11 +2,6 @@ require "objects/Tutorial.lua"
 
 local t = Tutorial.load
 
--- Types of "tutorial":
-  -- event based
-  -- object based
-  -- relation based (object to object)
-
 
 states.tutorial = {
   tutorials = {
@@ -17,21 +12,35 @@ states.tutorial = {
       end,
     }),
     t({
-      text = "Help Santa send these Good Presents by moving them to the Goal.",
+      text = "This is Coal. It pops out of packages if you destroy good ones or even bad ones blown up inside the Goal.",
+      display = 5.0,
       trigger = function(object)
-        return object:kindOf(Present) and not object.broken
+        return object:kindOf(Coal)
       end,
     }),
     t({
-      text = "Stop delivery of Bad Presents by moving them out of the goal area, or right click to destroy them.",
+      text = "This is is a Present. Click and drag to move it.",
+      trigger = function(object)
+        return object:kindOf(Present)
+      end,
+    }),
+    t({
+      text = "This is the Goal. Move good presents in here!",
+      trigger = function(object)
+        return object:kindOf(Goal)
+      end,
+    }),
+    t({
+      text = "Stop delivery of Bad Presents by right clicking to destroy them, or by moving them out of the goal area.",
+      display = 5.0,
       trigger = function(object)
         return object:kindOf(Present) and object.broken
       end,
     }),
     t({
-      text = "This is Coal. It pops out of packages if you destroy good ones or even bad ones inside the Goal.",
+      text = "Help Santa send these Good Presents by moving them to the Goal.",
       trigger = function(object)
-        return object:kindOf(Coal)
+        return object:kindOf(Present) and not object.broken
       end,
     }),
     t({
