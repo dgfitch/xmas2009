@@ -24,7 +24,7 @@ Tutorial = {
   end,
 
   rubberband = function(self, amount)
-    local ox, oy = self.object.body:getPosition()
+    local ox, oy = self.object:getPosition()
     local dx = math.abs(ox - self.x)
     local dy = math.abs(oy - self.y) 
     if dx < 40 and dy < 40 then

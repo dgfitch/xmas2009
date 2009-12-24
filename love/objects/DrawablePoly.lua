@@ -18,16 +18,14 @@ DrawablePoly = {
   end,
 
   getPosition = function( self )
-    local shape
-    if self.poly then
-      shape = self.poly
-    elseif self.polys then
-      shape = self.polys[1]
+    local x, y = self.body:getPosition()
+    if (not x) or x <= 20 or x >= WIDTH - 100 then
+      x = WIDTH / 2
     end
-
-    local x, y = shape:getPoints()
-
-    return { x, y }
+    if (not y) or y <= 20 or y >= WIDTH - 100 then
+      y = WIDTH / 2
+    end
+    return x, y
   end,
 
   drawPoly = function( self, poly, lineWidth ) 
