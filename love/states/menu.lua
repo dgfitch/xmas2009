@@ -21,6 +21,7 @@ states.menu = {
   update = function(s, dt)
     s.background:update( dt )
     if love.mouse.isDown( 'l' ) then
+      states.game.background = s.background
       states.game:initialize()
       changeState( states.game )
     end

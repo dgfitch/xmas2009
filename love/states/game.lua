@@ -131,8 +131,6 @@ states.game = {
     
     s.cursor = Cursor.load( s.world )
     love.mouse.setVisible( false )
-
-    s.background = Background.load( s )
   end,
 
   draw = function(s)
@@ -165,6 +163,7 @@ states.game = {
     s.time = s.time + (dt * s.speed)
     if s.time >= 1.0 then 
       s:updateScore()
+      states.over.background = s.background
       changeState( states.over )
     end
   end,

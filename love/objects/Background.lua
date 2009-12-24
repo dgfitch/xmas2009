@@ -8,24 +8,37 @@ Background = {
   h2 = love.graphics.newImage( "graphics/hills2.png" ),
   height1 = HEIGHT / 3,
   height2 = HEIGHT / 3 + ( SIZE * 15),
+  flake8 = love.graphics.newImage( "graphics/flake8.png" ),
 
   load = function( owner )
     local self = {}
     mixin( self, Background )
     self.owner = owner
+    self.snow1 = love.graphics.newParticleSystem( self.flake8, 50 )
+    self.initSnow(self.snow1, 30)
+    self.snow2 = love.graphics.newParticleSystem( self.flake8, 50 )
+    self.initSnow(self.snow2, 20)
     return self
   end,
 
+  initSnow = function(p, gravity)
+    p:setEmissionRate(6)
+    p:setParticleLife(5)
+    p:setDirection(math.pi / 2)
+    p:setSpread(math.pi)
+    p:setRotation(0,360)
+    p:setSpin(0,360,1.0)
+    p:setGravity(gravity or 10)
+    p:setSize(1,0.9)
+    p:setSpeed(80,120)
+  end,
+
   average = function(self, i)
-    if self.owner and self.owner.time then
-      return (self.c1[i] * (1 - self.owner.time) + self.c2[i] * self.owner.time )
-    else
-      return self.c2[i]
-    end
+    return (self.c1[i] * (1 - self:ownertime()) + self.c2[i] * self.ownertime() )
   end,
 
   draw = function(self)
-    love.graphics.setColor( self:average(1), self:average(2), self:average(3) )
+    love.graphics.setColor( unpack( self.c1 ) )
     love.graphics.rectangle( "fill", 0, 0, WIDTH, HEIGHT )
     local x1 = self.t * 2
     local x2 = self.t * 5
@@ -33,17 +46,29 @@ Background = {
     love.graphics.draw( self.h1, x1, self.height1 )
     love.graphics.draw( self.h2, x2-1024, self.height2 )
     love.graphics.draw( self.h2, x2, self.height2 )
+    local sx1 = WIDTH / 2 + math.sin(x1 / 10) * 40
+    local sx2 = WIDTH / 2 + math.sin(x2 / 10) * 40
+    love.graphics.draw( self.snow1, sx1, -20)
+    love.graphics.draw( self.snow2, sx2, -20)
   end,
 
   update = function(self, dt)
     self.t = self.t + dt
+    local snowRate = dt / (5 - self:ownertime() * 2)
+    self.snow1:update(snowRate)
+    self.snow2:update(snowRate)
+  end,
+
+  ownertime = function(self)
+    if self and self.owner and self.owner.time then
+      return self.owner.time
+    else
+      return 1.0
+    end
   end,
 
   drawOverlay = function(self)
-    local alpha = 100 
-    if self.owner and self.owner.time then
-      alpha = self.owner.time * 100
-    end
+    local alpha = self:ownertime() * 100
     love.graphics.setColor( self:average(1), self:average(2), self:average(3), alpha )
     love.graphics.rectangle( 'fill', 0, 0, WIDTH, HEIGHT )
   end,

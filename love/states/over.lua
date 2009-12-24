@@ -1,7 +1,7 @@
 states.over = {
   draw = function(s)
     local score = states.game.score
-    love.graphics.setFont(36)
+    love.graphics.setFont(48)
     p("SANTA HAS DEPARTED", 220)
     love.graphics.setFont(12)
     p("This year, you and the elves have shipped:", 300)

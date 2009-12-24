@@ -37,7 +37,7 @@ MachineGun = {
 
   update = function(self, dt)
     self.cooldown = self.cooldown + dt
-    if self.cooldown > self.time and states.game.time < 0.95 then
+    if self.cooldown > self.time and states.game.time < 0.9 then
       self:fire()
     end
   end,
