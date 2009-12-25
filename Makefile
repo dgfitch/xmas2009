@@ -24,3 +24,6 @@ build: clean
 
 run: build
 	$(LOVE) $(NAME).love	
+
+publish: build
+	scp $(NAME).love mindfill.com:www/projects/games/xmas2009
