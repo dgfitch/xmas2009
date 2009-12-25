@@ -2,17 +2,17 @@ require "objects/Background.lua"
 
 states.menu = {
   title = "Santa's BOXPLOSION!!",
-  size = 100,
+  titleImage = love.graphics.newImage( "graphics/title.png" ),
+  t = 0,
+  time = 0.3,
 
   draw = function(s)
-    love.graphics.setFont(s.size)
-    love.graphics.setColor( 255, 0, 0, 255 )
-    p(s.title, HEIGHT / 3)
-    love.graphics.setFont(28)
-    p("Click to begin", HEIGHT * 3 / 4)
+    local size = 0.7 * SIZE + (math.sin(s.t / 5) / 30) 
+    love.graphics.draw( s.titleImage, WIDTH / 2, HEIGHT / 2, 0, size, size, 512, 256 )
   end,
 
   update = function(s, dt)
+    s.t = s.t + dt
     if love.mouse.isDown( 'l' ) then
       states.game:initialize()
       changeState( states.game )

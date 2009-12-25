@@ -38,7 +38,6 @@ Background = {
 
   draw = function(self)
     love.graphics.setBackgroundColor( self:average(1), self:average(2), self:average(3) )
-    --love.graphics.rectangle( "fill", 0, 0, WIDTH, HEIGHT )
     local x1 = self.t * 4
     while x1 > WIDTH do
       x1 = x1 - WIDTH  

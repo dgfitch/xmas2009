@@ -8,7 +8,7 @@ require "states.lua"
 
 
 function love.draw()
-  love.graphics.setCaption( 'Hairy Xmas! | FPS: ' .. love.timer.getFPS() )
+  love.graphics.setCaption( 'Santa\'s Boxsplosion | FPS: ' .. love.timer.getFPS() )
   background:draw()
   S:draw()
   background:drawOverlay()
