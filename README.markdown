@@ -10,3 +10,9 @@ DEBUG CHEAT: Press 1 to switch level.
 
 -     love: http://love2d.org/
 
+-------
+
+License is Creative Commons Attribution-Noncommercial-Sharealike 3.0 US
+
+http://creativecommons.org/licenses/by-nc-sa/3.0/us/
+
