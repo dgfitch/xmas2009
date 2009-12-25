@@ -10,7 +10,7 @@ Wall = {
     self.body = love.physics.newBody( world, x, y, 0, 0 )
     self.bounding = bounding
 
-    self.color = { 64, 64, 64, 255 }
+    self.color = { 120, 120, 120, 255 }
     self:loadPolys( polys )
     return self
   end,

@@ -1,5 +1,5 @@
 Tutorial = {
-  display = 3.0,
+  display = 4.0,
   time = 0,
   text = "UNDEFINED",
 
@@ -14,17 +14,17 @@ Tutorial = {
   end,
 
   activate = function(self, object)
-    local ox, oy = object:getPosition()
-    object.tutorial = self
+    local ox, oy = object:getTutorialPosition()
     self.x = WIDTH / 2
     self.y = HEIGHT / 2
     self.object = object
+    object.tutorial = self
     self:rubberband(0.9)
     self.active = true
   end,
 
   rubberband = function(self, amount)
-    local ox, oy = self.object:getPosition()
+    local ox, oy = self.object:getTutorialPosition()
     local dx = math.abs(ox - self.x)
     local dy = math.abs(oy - self.y) 
     if dx < 40 and dy < 40 then
@@ -55,7 +55,7 @@ Tutorial = {
   end,
 
   draw = function(self)
-    love.graphics.setFont(14)
+    love.graphics.setFont(12)
     love.graphics.setColor( 0, 0, 0, 255 )
     love.graphics.printf(self.text, self.x, self.y, WIDTH / 4, "center")
   end,

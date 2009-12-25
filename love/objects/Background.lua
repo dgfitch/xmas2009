@@ -2,18 +2,17 @@ require "objects/DrawablePoly.lua"
 
 Background = {
   t = 0,
-  c1 = {200, 220, 255},
+  c1 = {220, 240, 255},
   c2 = {120, 80, 160},
   h1 = love.graphics.newImage( "graphics/hills1.png" ),
   h2 = love.graphics.newImage( "graphics/hills2.png" ),
   height1 = HEIGHT / 3,
-  height2 = HEIGHT / 3 + ( SIZE * 15),
+  height2 = HEIGHT / 3 + (SIZE * 45),
   flake8 = love.graphics.newImage( "graphics/flake8.png" ),
 
-  load = function( owner )
+  load = function( )
     local self = {}
     mixin( self, Background )
-    self.owner = owner
     self.snow1 = love.graphics.newParticleSystem( self.flake8, 50 )
     self.initSnow(self.snow1, 30)
     self.snow2 = love.graphics.newParticleSystem( self.flake8, 50 )
@@ -38,12 +37,21 @@ Background = {
   end,
 
   draw = function(self)
-    love.graphics.setColor( unpack( self.c1 ) )
-    love.graphics.rectangle( "fill", 0, 0, WIDTH, HEIGHT )
-    local x1 = self.t * 2
-    local x2 = self.t * 5
+    love.graphics.setBackgroundColor( self:average(1), self:average(2), self:average(3) )
+    --love.graphics.rectangle( "fill", 0, 0, WIDTH, HEIGHT )
+    local x1 = self.t * 4
+    while x1 > WIDTH do
+      x1 = x1 - WIDTH  
+    end
+    local x2 = self.t * 9
+    while x2 > WIDTH do
+      x2 = x2 - WIDTH  
+    end
+    love.graphics.setBlendMode( "alpha" )
+    love.graphics.setColor( 235, 235, 235, 160 )
     love.graphics.draw( self.h1, x1-1024, self.height1 )
     love.graphics.draw( self.h1, x1, self.height1 )
+    love.graphics.setColor( 255, 255, 255 )
     love.graphics.draw( self.h2, x2-1024, self.height2 )
     love.graphics.draw( self.h2, x2, self.height2 )
     local sx1 = WIDTH / 2 + math.sin(x1 / 10) * 40
@@ -60,17 +68,14 @@ Background = {
   end,
 
   ownertime = function(self)
-    if self and self.owner and self.owner.time then
-      return self.owner.time
+    if S and S.time then
+      return S.time
     else
       return 1.0
     end
   end,
 
   drawOverlay = function(self)
-    local alpha = self:ownertime() * 100
-    love.graphics.setColor( self:average(1), self:average(2), self:average(3), alpha )
-    love.graphics.rectangle( 'fill', 0, 0, WIDTH, HEIGHT )
   end,
 }
 

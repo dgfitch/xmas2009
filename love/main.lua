@@ -15,9 +15,9 @@ function love.draw()
 end
 
 function love.update(dt)
-	if love.keyboard.isDown( 'escape' ) then
+  if love.keyboard.isDown( 'escape' ) then
     love.event.push('q')
-	end
+  end
   background:update(dt)
   S:update(dt)
 end

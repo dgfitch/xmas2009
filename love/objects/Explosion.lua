@@ -4,11 +4,9 @@ Explosion = {
   draw = function(self)
     local x, y = self.x, self.y
     
-    love.graphics.setColorMode('modulate')
     love.graphics.draw(self.smoke,x,y)
     love.graphics.setBlendMode('additive')
     love.graphics.draw(self.fire,x,y)
-    love.graphics.setColorMode('replace')
     love.graphics.setBlendMode('alpha')
   end,
 

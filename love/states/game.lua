@@ -10,7 +10,7 @@ states.game = {
       local h = HEIGHT * 2 / 3
 
       s:addGoal( {
-          { WIDTH/2, 0, WIDTH, 0, WIDTH, HEIGHT, WIDTH/2, HEIGHT },
+          { WIDTH/2, h, WIDTH, h, WIDTH, HEIGHT, WIDTH/2, HEIGHT },
         } )
 
       s:addWalls({ { WIDTH/2 - s.wallSize, h, WIDTH/2 + s.wallSize, h, WIDTH/2 + s.wallSize, HEIGHT, WIDTH/2 - s.wallSize, HEIGHT } })
@@ -78,20 +78,37 @@ states.game = {
       local h = HEIGHT * 2/3
       local w1 = WIDTH / 3
       local w2 = WIDTH * 2/3
-      s:addWalls({ 
-        { w1 - s.wallSize, h, w1 + s.wallSize, h, w1 + s.wallSize, HEIGHT, w1 - s.wallSize, HEIGHT },
-        { w2 - s.wallSize, h, w2 + s.wallSize, h, w2 + s.wallSize, HEIGHT, w2 - s.wallSize, HEIGHT } 
-      })
 
       s:addGoal( {
           { 0, HEIGHT*3/5, WIDTH, HEIGHT*3/5, WIDTH, HEIGHT, 0, HEIGHT },
         } )
 
-      -- present firing guns
+      s:addWalls({ 
+        { w1 - s.wallSize, h, w1 + s.wallSize, h, w1 + s.wallSize, HEIGHT, w1 - s.wallSize, HEIGHT },
+        { w2 - s.wallSize, h, w2 + s.wallSize, h, w2 + s.wallSize, HEIGHT, w2 - s.wallSize, HEIGHT } 
+      })
+
       local mx = 30 * SIZE
       local my = 30 * SIZE
       s:add( MachineGun.load( s.world, mx, my, 0, 1.5, 120 ) )
       s:add( MachineGun.load( s.world, WIDTH - mx, my, math.pi * -1, 1.51, 120 ) )
+    end,
+
+    function(s)
+      s.title = "Topple Sort"
+
+      local h = HEIGHT / 3
+
+      s:addGoal( {
+          { WIDTH/2, h, WIDTH, h, WIDTH, HEIGHT, WIDTH/2, HEIGHT },
+        } )
+
+      s:addWalls({
+        { WIDTH/2 - s.wallSize, h, WIDTH/2 + s.wallSize, h, WIDTH/2 + s.wallSize, HEIGHT, WIDTH/2 - s.wallSize, HEIGHT },
+        { WIDTH/4, h, WIDTH*3/4, h, WIDTH*3/4 + s.wallSize, h + s.wallSize, WIDTH/4 - s.wallSize, h + s.wallSize },
+      })
+
+      s:add( MachineGun.load( s.world, WIDTH/2, h - 30, math.halfpi * -1, 1.3, 1  ) )
     end,
   },
 
@@ -135,9 +152,11 @@ states.game = {
     for k,v in pairs(s.objects) do
       if v.draw then v:draw() end
     end
-    love.graphics.setColor( 255, 0, 0, 255 )
-    love.graphics.setFont(24)
-    p(s.title, 30)
+    if s.time < 0.05 then
+      love.graphics.setColor( 255, 0, 0, 255 )
+      love.graphics.setFont(16)
+      p(s.title, 30)
+    end
     T:draw()
     s.cursor:draw()
   end,

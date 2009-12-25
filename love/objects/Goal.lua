@@ -10,7 +10,7 @@ Goal = {
     mixin( self, DrawablePoly )
     self.body = love.physics.newBody( world, x, y, 0, 0 )
 
-    self.color = { 255, 255, 255, 50 }
+    self.color = { 100, 255, 100, 50 }
     self:loadPolys( polys )
     return self
   end,

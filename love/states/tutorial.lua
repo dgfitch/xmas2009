@@ -12,8 +12,8 @@ states.tutorial = {
       end,
     }),
     t({
-      text = "This is Coal. It pops out of packages if you destroy good ones or even bad ones blown up inside the Goal.",
-      display = 5.0,
+      text = "This is Coal. If you destroy good packages or blow up bad ones inside the Goal, you get lumps of it. Kids don't like coal!",
+      display = 6.0,
       trigger = function(object)
         return object:kindOf(Coal)
       end,
@@ -52,6 +52,7 @@ states.tutorial = {
   },
   
   update = function(self, dt)
+    if S ~= states.game then return end
     local anyActive = false
     for k,v in pairs(self.tutorials) do
       if v.active then
@@ -74,6 +75,7 @@ states.tutorial = {
   end,
 
   draw = function(self, dt)
+    if S ~= states.game then return end
     for k,v in pairs(self.tutorials) do
       if v.active then v:draw() end
     end

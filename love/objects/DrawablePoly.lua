@@ -1,6 +1,8 @@
 DrawablePoly = {
   draw = function( self, lineWidth )
-    if states.game.cursor.connected == self then
+    if self.tutorial then
+      lineWidth = 3 * math.sin(S.time * 100)
+    elseif states.game.cursor.connected == self then
       lineWidth = 4
     elseif states.game.cursor.touching == self then
       lineWidth = 2
@@ -17,12 +19,12 @@ DrawablePoly = {
     love.graphics.setColor( 0, 0, 0 )
   end,
 
-  getPosition = function( self )
+  getTutorialPosition = function( self )
     local x, y = self.body:getPosition()
     if (not x) or x <= 20 or x >= WIDTH - 100 then
       x = WIDTH / 2
     end
-    if (not y) or y <= 20 or y >= WIDTH - 100 then
+    if (not y) or y <= 20 or y >= HEIGHT - 40 then
       y = WIDTH / 2
     end
     return x, y
@@ -30,14 +32,13 @@ DrawablePoly = {
 
   drawPoly = function( self, poly, lineWidth ) 
     love.graphics.polygon( 'fill', poly:getPoints() )
-    if self.colorLine then
+    if self.tutorial or self.colorLine then
       love.graphics.setLineWidth( (lineWidth or 1) * SIZE )
-      love.graphics.setColor( unpack( self.colorLine ) )
-      love.graphics.polygon( 'line', poly:getPoints() )
-    end
-    if self.tutorial then
-      love.graphics.setLineWidth( 4 * SIZE )
-      love.graphics.setColor( 255, 0, 0, 0 )
+      if self.tutorial then
+        love.graphics.setColor( 255, 0, 0, 200 )
+      else
+        love.graphics.setColor( unpack( self.colorLine ) )
+      end
       love.graphics.polygon( 'line', poly:getPoints() )
     end
   end,
