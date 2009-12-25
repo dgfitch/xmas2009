@@ -108,7 +108,30 @@ states.game = {
         { WIDTH/4, h, WIDTH*3/4, h, WIDTH*3/4 + s.wallSize, h + s.wallSize, WIDTH/4 - s.wallSize, h + s.wallSize },
       })
 
-      s:add( MachineGun.load( s.world, WIDTH/2, h - 30, math.halfpi * -1, 1.3, 1  ) )
+      s:add( MachineGun.load( s.world, WIDTH/2, 30, math.halfpi * -1, 1.3, 1  ) )
+    end,
+
+    function(s)
+      s.title = "Bottlenecked"
+
+      local h1 = HEIGHT / 4
+      local h2 = HEIGHT / 2
+      local h3 = HEIGHT * 3 / 4
+      local w1 = WIDTH / 4
+      local w2 = WIDTH * 3 / 4
+      local slant = 30
+
+      s:addGoal( {
+          { 0, h3 + slant, WIDTH, h3 + slant, WIDTH, HEIGHT, 0, HEIGHT },
+        } )
+
+      s:addWalls({
+        { 0, h1 - slant, w2, h1 + slant, w2, h1 + slant + s.wallSize, 0, h1 + slant},
+        { w1, h2 + slant, WIDTH, h2 - slant, WIDTH, h2 + slant, w1, h2 + slant + s.wallSize},
+        { 0, h3 - slant, w2, h3 + slant, w2, h3 + slant + s.wallSize, 0, h3 + slant},
+      })
+
+      s:add( MachineGun.load( s.world, 30, 30, 0, 3, 40 ) )
     end,
   },
 
