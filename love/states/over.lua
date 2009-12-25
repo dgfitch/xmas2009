@@ -74,7 +74,7 @@ states.over = {
   end,
 
   update = function(s, dt)
-    if love.mouse.isDown( 'l' ) and love.mouse.isDown( 'r' ) then
+    if ( love.mouse.isDown( 'l' ) and love.mouse.isDown( 'r' ) ) or love.keyboard.isDown( 'return' ) then
       states.game:nextLevel()
       changeState( states.game )
     end

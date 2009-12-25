@@ -13,7 +13,7 @@ states.menu = {
 
   update = function(s, dt)
     s.t = s.t + dt
-    if love.mouse.isDown( 'l' ) then
+    if love.mouse.isDown( 'l' ) or love.keyboard.isDown( 'return' ) then
       states.game:initialize()
       changeState( states.game )
     end
